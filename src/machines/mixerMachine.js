@@ -1,8 +1,7 @@
 import { createMachine, assign } from "xstate";
 import { pure } from "xstate/lib/actions";
-import { start, getContext, Destination, Draw, Transport as t } from "tone";
+import { start, getContext, Destination, Transport as t } from "tone";
 import { dBToPercent, scale } from "../utils/scale";
-import { db } from "../../db";
 import { getSong } from "../utils/getSong";
 import { roxanne } from "../songs";
 
@@ -12,10 +11,6 @@ const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
 const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
 const initialMutes = currentTracks.map((currentTrack) => currentTrack.mute);
 const initialSolos = currentTracks.map((currentTrack) => currentTrack.solo);
-const initialAutomateModes = currentTracks.map(
-  (currentTrack) => currentTrack.automateMode
-);
-let data = [];
 
 export const mixerMachine = createMachine(
   {
@@ -28,7 +23,6 @@ export const mixerMachine = createMachine(
       pans: initialPans,
       solos: initialSolos,
       mutes: initialMutes,
-      automateModes: initialAutomateModes,
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -46,14 +40,11 @@ export const mixerMachine = createMachine(
       playing: {
         on: {
           PAUSE: { actions: "pause", target: "stopped" },
-          RECORD: { actions: "record" },
-          AUTOMATE: { actions: "automate" },
         },
       },
       stopped: {
         on: {
           PLAY: { actions: "play", target: "playing" },
-          CHANGE_AUTOMATE_MODE: { actions: "changeAutomateMode" },
         },
       },
     },
@@ -151,47 +142,6 @@ export const mixerMachine = createMachine(
           JSON.stringify([...currentTracks])
         );
         return [assign({ solo: tempSolos }), soloChannel];
-      }),
-
-      changeAutomateMode: pure((context, { id, target }) => {
-        const trackIndex = target.id.at(-1);
-        const value = target.value;
-        const tempAutomateModes = context.automateModes;
-        tempAutomateModes[trackIndex] = value;
-        currentTracks[trackIndex].automateMode[`${id}`] = target.value;
-        localStorage.setItem(
-          "currentTracks",
-          JSON.stringify([...currentTracks])
-        );
-        return [assign({ automateMode: tempAutomateModes })];
-      }),
-
-      record: assign((context, { trackIndex, value, id }) => {
-        const time = t.seconds.toFixed(1);
-        data = [{ time, value }, ...data];
-        db[`track${trackIndex + 1}`].put({ id, data });
-      }),
-
-      automate: assign((context, { trackIndex, channel, trackData, id }) => {
-        if (!trackData) return;
-        function assignParam(trackIndex, data) {
-          t.schedule((time) => {
-            if (currentTracks[trackIndex].automateMode[`${id}`] !== "automate")
-              return;
-
-            Draw.schedule(() => {
-              const scaled = dBToPercent(scale(parseFloat(data.value)));
-              channel[`${id}`].value = scaled;
-              context[`${id}s`][trackIndex] = data.value;
-              console.log("data.value", data.value);
-            }, time);
-          }, data.time);
-        }
-
-        currentTracks[trackIndex].automateMode[`${id}`] === "automate" &&
-          trackData[0].data?.forEach((data) => {
-            assignParam(trackIndex, data);
-          });
       }),
     },
   }
