@@ -89,6 +89,7 @@ export const mixerMachine = createMachine(
         };
         const tempVols = context.volumes;
         tempVols[trackIndex] = parseFloat(value);
+        currentTracks[trackIndex].volume = value;
         localStorage.setItem(
           "currentTracks",
           JSON.stringify([...currentTracks])

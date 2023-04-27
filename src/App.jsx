@@ -18,12 +18,6 @@ function App() {
       case "roxanne":
         localStorage.setItem("song", JSON.stringify(roxanne));
         currentTracks = roxanne.tracks;
-        currentTracks.forEach((currentTrack) => {
-          currentTrack["volume"] = -32;
-          currentTrack["pan"] = 0;
-          currentTrack["mute"] = false;
-          currentTrack["solo"] = false;
-        });
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         window.location.reload();
         setSourceSong(roxanne);
@@ -31,12 +25,6 @@ function App() {
       case "aDayInTheLife":
         localStorage.setItem("song", JSON.stringify(aDayInTheLife));
         currentTracks = aDayInTheLife.tracks;
-        currentTracks.forEach((currentTrack) => {
-          currentTrack["volume"] = -32;
-          currentTrack["pan"] = 0;
-          currentTrack["mute"] = false;
-          currentTrack["solo"] = false;
-        });
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         window.location.reload();
         setSourceSong(aDayInTheLife);
@@ -44,25 +32,12 @@ function App() {
       case "blueMonday":
         localStorage.setItem("song", JSON.stringify(blueMonday));
         currentTracks = blueMonday.tracks;
-        currentTracks.forEach((currentTrack) => {
-          currentTrack["volume"] = -32;
-          currentTrack["pan"] = 0;
-          currentTrack["mute"] = false;
-          currentTrack["solo"] = false;
-        });
-        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         window.location.reload();
         setSourceSong(blueMonday);
         break;
       case "justDance":
         localStorage.setItem("song", JSON.stringify(justDance));
         currentTracks = justDance.tracks;
-        currentTracks.forEach((currentTrack) => {
-          currentTrack["volume"] = -32;
-          currentTrack["pan"] = 0;
-          currentTrack["mute"] = false;
-          currentTrack["solo"] = false;
-        });
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         window.location.reload();
         setSourceSong(justDance);
