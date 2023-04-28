@@ -25,6 +25,7 @@ export const mixerMachine = createMachine(
       solos: initialSolos,
       mutes: initialMutes,
       bus1fx1: "nofx",
+      bus1fx2: "nofx",
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -49,11 +50,13 @@ export const mixerMachine = createMachine(
         initial: "active",
         states: {
           inactive: {
+            tags: "inactive",
             on: {
               TOGGLE: "active",
             },
           },
           active: {
+            tags: "active",
             on: {
               TOGGLE: "inactive",
             },
@@ -122,8 +125,15 @@ export const mixerMachine = createMachine(
         return [assign({ busVolume: parseFloat(target.value) }), volume];
       }),
 
+      // make pure
       setBus1Fx1: assign((context, { target }) => {
+        const trackIndex = target.id.at(-1);
         context.bus1fx1 = target.value;
+        currentTracks[trackIndex].bus1fx1 = target.value;
+        localStorage.setItem(
+          "currentTracks",
+          JSON.stringify([...currentTracks])
+        );
       }),
 
       setBus1Fx2: assign((context, { target }) => {

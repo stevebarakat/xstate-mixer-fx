@@ -18,6 +18,7 @@ export const roxanne = {
       pan: 0,
       mute: false,
       solo: false,
+      activeBusses: [false, false],
     },
     {
       id: "5kj3lk5j34",
@@ -27,6 +28,7 @@ export const roxanne = {
       pan: 0,
       mute: false,
       solo: false,
+      activeBusses: [false, false],
     },
     {
       id: "j3lk53llkj32",
@@ -36,6 +38,7 @@ export const roxanne = {
       pan: 0,
       mute: false,
       solo: false,
+      activeBusses: [false, false],
     },
     {
       id: "rj3lk5j5jk34j5l3k",
@@ -45,6 +48,7 @@ export const roxanne = {
       pan: 0,
       mute: false,
       solo: false,
+      activeBusses: [false, false],
     },
   ],
 };

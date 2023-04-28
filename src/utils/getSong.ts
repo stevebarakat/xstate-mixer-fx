@@ -12,6 +12,8 @@ export function getSong(defaultSong) {
     currentMix = {
       songSlug: "roxanne",
       reverbsMix: [0.5, 0.5],
+      bus1fx1: "nofx",
+      bus1fx2: "nofx",
     };
     localStorage.setItem("currentMix", JSON.stringify(currentMix));
   }
