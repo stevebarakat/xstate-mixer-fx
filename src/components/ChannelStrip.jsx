@@ -2,8 +2,9 @@ import Pan from "./Pan";
 import Solo from "./Solo";
 import Mute from "./Mute";
 import TrackVolume from "./TrackVolume";
+import { Destination } from "tone";
 
-function ChannelStrip({ track, trackIndex, channel }) {
+function ChannelStrip({ track, trackIndex, channel, channels }) {
   return (
     <div>
       <select name="track-fx" id="fx-select">
@@ -12,7 +13,19 @@ function ChannelStrip({ track, trackIndex, channel }) {
         <option value="delay">Delay</option>
       </select>
       <div className="bus-btn">
-        <input id={`bus1${trackIndex}`} type="checkbox" />
+        <input
+          id={`bus1${trackIndex}`}
+          type="checkbox"
+          onChange={(e) => {
+            const id = e.target.id.at(-1);
+            if (e.target.checked) {
+              channels[id].send("reverb");
+            } else {
+              channels[id].disconnect();
+              channels[id].connect(Destination);
+            }
+          }}
+        />
         <label htmlFor={`bus1${trackIndex}`}>1</label>
         <input id={`bus2${trackIndex}`} type="checkbox" />
         <label htmlFor={`bus2${trackIndex}`}>2</label>

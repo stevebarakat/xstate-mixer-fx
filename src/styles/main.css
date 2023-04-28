@@ -55,6 +55,7 @@
   height: 100%;
 }
 
+.channels > div:nth-last-of-type(2),
 .channels > div:last-of-type {
   display: flex;
   flex-direction: column;
@@ -66,6 +67,11 @@
   height: 100%;
 }
 
+.channels > div:nth-last-of-type(2) {
+  border: 1px dashed var(--primary-color);
+}
+
+.channels > div:nth-last-of-type(2) input[type="range"],
 .channels > div:last-of-type input[type="range"] {
   height: 100%;
 }
