@@ -18,14 +18,16 @@ export const Mixer = ({ song }) => {
         {song.artist} - {song.title}
       </div>
       <div className="channels">
-        {tracks.map((track, i) => (
-          <ChannelStrip
-            key={track.path}
-            track={track}
-            trackIndex={i}
-            channel={channels.current[i]}
-          />
-        ))}
+        <div>
+          {tracks.map((track, i) => (
+            <ChannelStrip
+              key={track.path}
+              track={track}
+              trackIndex={i}
+              channel={channels.current[i]}
+            />
+          ))}
+        </div>
         <MainVolume />
       </div>
       <Transport song={song} />

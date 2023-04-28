@@ -32,10 +32,15 @@
   align-items: center;
   gap: 24px;
 }
+
 .channels {
   display: flex;
+}
+
+.channels > div {
+  display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   gap: 4px;
 }
 
@@ -50,17 +55,18 @@
   height: 100%;
 }
 
-.channel:last-of-type {
+.channels > div:last-of-type {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--primary-color);
   border-radius: 12px;
-  margin-left: 4px;
+  margin-left: 8px;
   padding: 0;
   padding: 7.5% 0;
+  height: 100%;
 }
 
-.channel:last-of-type input[type="range"] {
+.channels > div:last-of-type input[type="range"] {
   height: 100%;
 }
 
@@ -83,7 +89,6 @@
   width: 8ch;
 }
 
-.pbm-btn,
 .chan-strip-btn {
   width: 100%;
   height: fit-content;
@@ -92,7 +97,7 @@
   justify-content: space-between;
   gap: 8px;
 }
-.pbm-btn label,
+
 .chan-strip-btn label {
   border: 1px solid transparent;
   border-radius: 4px;
@@ -102,44 +107,15 @@
   -webkit-tap-highlight-color: transparent;
   transition: all 0.2s;
   cursor: pointer;
-}
-
-.chan-strip-btn label {
   color: var(--primary-color);
   padding: 4px 8px;
   font-weight: 900;
 }
 
-.pbm-btn label {
-  width: 22px;
-  padding: 2px 4px;
-  font-weight: 400;
-  color: var(--white);
-  line-height: 1.52;
-}
-
-.pbm-btn input[type="radio"],
 .chan-strip-btn input[type="checkbox"] {
   position: absolute;
   appearance: none;
 }
-
-.pbm-btn input[type="radio"]:checked + label {
-  background: black;
-  color: var(--white);
-  border-bottom: 2px solid var(--primary-color);
-  border-radius: 0;
-  transition: all 0.2s;
-}
-
-.pbm-btn input[type="radio"]:hover + label {
-  font-weight: 900;
-  font-size: 0.9rem;
-  border-bottom: 2px solid var(--white);
-  border-radius: 0;
-  transition: all 0.2s;
-}
-
 .chan-strip-btn input[type="checkbox"]:checked + label {
   background: var(--primary-color);
   color: black;
@@ -149,6 +125,16 @@
 .chan-strip-btn input[type="checkbox"]:hover + label {
   border: 1px solid var(--primary-color);
   transition: all 0.2s;
+}
+
+#fx-select {
+  width: 100%;
+  padding: 4px;
+  border-radius: 8px;
+  background: black;
+  border: none;
+  margin-bottom: 4px;
+  color: var(--primary-color);
 }
 
 .ghost,
