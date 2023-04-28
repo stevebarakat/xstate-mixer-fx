@@ -24,6 +24,7 @@ export const mixerMachine = createMachine(
       pans: initialPans,
       solos: initialSolos,
       mutes: initialMutes,
+      fx: null,
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -32,6 +33,7 @@ export const mixerMachine = createMachine(
       CHANGE_VOLUME: { actions: "changeVolume" },
       CHANGE_MAIN_VOLUME: { actions: "changeMainVolume" },
       CHANGE_BUS_VOLUME: { actions: "changeBusVolume" },
+      SET_FX: { actions: "setFx" },
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
@@ -88,6 +90,10 @@ export const mixerMachine = createMachine(
           channel.volume.value = scaled;
         };
         return [assign({ busVolume: parseFloat(target.value) }), volume];
+      }),
+
+      setFx: assign((context, { target }) => {
+        context.fx = target.value;
       }),
 
       changeVolume: pure((context, { target, channel }) => {
