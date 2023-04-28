@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+import { Channel, Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
 import Transport from "./Transport";
 import Loader from "./Loader";
@@ -13,7 +15,38 @@ export const Mixer = ({ song }) => {
   const [channels] = useChannelStrip({ tracks });
 
   console.log("state.context", state.context);
+  const reverb = useRef();
+  const delay = useRef();
+  const busChannel = useRef();
 
+  useEffect(() => {
+    switch (state.context.fx) {
+      case "nofx":
+        busChannel.current?.disconnect();
+        busChannel.current = new Channel().toDestination();
+        break;
+      case "reverb":
+        reverb.current = new Reverb(3).toDestination();
+        busChannel.current?.disconnect();
+        busChannel.current = new Channel().connect(reverb.current);
+        busChannel.current.receive("reverb");
+        break;
+      case "delay":
+        delay.current = new FeedbackDelay("8n", 0.5).toDestination();
+        busChannel.current?.disconnect();
+        busChannel.current = new Channel().connect(delay.current);
+        busChannel.current.receive("delay");
+        break;
+      default:
+        break;
+    }
+
+    return () => {
+      reverb.current?.dispose();
+      delay.current?.dispose();
+      busChannel.current?.dispose();
+    };
+  }, [state.context.fx]);
   return state.value === "loading" ? (
     <Loader song={song} />
   ) : (
@@ -21,7 +54,9 @@ export const Mixer = ({ song }) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      {state.context.fx === "reverb" ? <Reverber /> : null}
+      {state.context.fx === "reverb" ? (
+        <Reverber reverb={reverb.current} />
+      ) : null}
       <div className="channels">
         <div>
           {tracks.map((track, i) => (
@@ -34,7 +69,7 @@ export const Mixer = ({ song }) => {
             />
           ))}
         </div>
-        <BusOne />
+        <BusOne busChannel={busChannel.current} />
         <MainVolume />
       </div>
       <Transport song={song} />
