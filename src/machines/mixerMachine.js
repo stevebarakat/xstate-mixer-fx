@@ -7,10 +7,10 @@ import { roxanne } from "../songs";
 
 const context = getContext();
 const [song, currentTracks] = getSong(roxanne);
-const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
-const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
-const initialMutes = currentTracks.map((currentTrack) => currentTrack.mute);
-const initialSolos = currentTracks.map((currentTrack) => currentTrack.solo);
+// const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
+// const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
+// const initialMutes = currentTracks.map((currentTrack) => currentTrack.mute);
+// const initialSolos = currentTracks.map((currentTrack) => currentTrack.solo);
 
 export const mixerMachine = createMachine(
   {
@@ -20,10 +20,10 @@ export const mixerMachine = createMachine(
     context: {
       mainVolume: -32,
       busVolume: -32,
-      volumes: initialVolumes,
-      pans: initialPans,
-      solos: initialSolos,
-      mutes: initialMutes,
+      volumes: [-32, -32, -32, -32],
+      pans: [],
+      solos: [],
+      mutes: [],
       bus1fx1: "nofx",
       bus1fx2: "nofx",
     },
@@ -42,6 +42,9 @@ export const mixerMachine = createMachine(
       CHANGE_REVERBS_MIX: { actions: "chengeReverbsMix" },
       CHANGE_REVERBS_PREDELAY: { actions: "changeReverbsPredelay" },
       CHANGE_REVERBS_DECAY: { actions: "changeReverbsDecay" },
+      CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
+      CHANGE_DELAYS_DELAY_TIME: { actions: "changeDelaysTime" },
+      CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
     },
 
     states: {
@@ -49,14 +52,14 @@ export const mixerMachine = createMachine(
       playing: {
         initial: "active",
         states: {
-          inactive: {
-            on: {
-              TOGGLE: "active",
-            },
-          },
           active: {
             on: {
               TOGGLE: "inactive",
+            },
+          },
+          inactive: {
+            on: {
+              TOGGLE: "active",
             },
           },
         },
@@ -67,14 +70,14 @@ export const mixerMachine = createMachine(
       stopped: {
         initial: "active",
         states: {
-          inactive: {
-            on: {
-              TOGGLE: "active",
-            },
-          },
           active: {
             on: {
               TOGGLE: "inactive",
+            },
+          },
+          inactive: {
+            on: {
+              TOGGLE: "active",
             },
           },
         },
@@ -213,6 +216,18 @@ export const mixerMachine = createMachine(
 
       changeReverbsDecay: assign((context, { target, reverb }) => {
         reverb.decay = target.value;
+      }),
+
+      changeDelaysMix: assign((context, { target, delay }) => {
+        delay.wet.value = target.value;
+      }),
+
+      changeDelaysTime: assign((context, { target, delay }) => {
+        delay.delayTime = target.value;
+      }),
+
+      changeDelaysFeedback: assign((context, { target, delay }) => {
+        delay.feedback = target.value;
       }),
     },
   }

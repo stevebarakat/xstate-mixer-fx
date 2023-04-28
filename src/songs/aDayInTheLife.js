@@ -12,50 +12,18 @@ export const aDayInTheLife = {
     {
       name: "Bass/Drums",
       path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/aDayInTheLife/bass-drums.mp3",
-      volume: -32,
-      pan: 0,
-      mute: false,
-      solo: false,
-      automateMode: {
-        volume: "static",
-        pan: "static",
-      },
     },
     {
       name: "Instruments",
       path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/aDayInTheLife/instruments.mp3",
-      volume: -32,
-      pan: 0,
-      mute: false,
-      solo: false,
-      automateMode: {
-        volume: "static",
-        pan: "static",
-      },
     },
     {
       name: "Orchestra",
       path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/aDayInTheLife/orchestra.mp3",
-      volume: -32,
-      pan: 0,
-      mute: false,
-      solo: false,
-      automateMode: {
-        volume: "static",
-        pan: "static",
-      },
     },
     {
       name: "Vocals",
       path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/aDayInTheLife/vox.mp3",
-      volume: -32,
-      pan: 0,
-      mute: false,
-      solo: false,
-      automateMode: {
-        volume: "static",
-        pan: "static",
-      },
     },
   ],
 };
