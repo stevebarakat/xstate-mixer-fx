@@ -8,33 +8,56 @@ import Reverber from "./Fx/Reverber";
 import { MixerMachineContext } from "../App";
 import MainVolume from "./MainVolume";
 import BusOne from "./BusOne";
+import { Rnd } from "react-rnd";
 
 export const Mixer = ({ song }) => {
   const tracks = song.tracks;
-  const [state] = MixerMachineContext.useActor();
+  const [state, send] = MixerMachineContext.useActor();
   const [channels] = useChannelStrip({ tracks });
 
-  console.log("state.context", state.context);
+  console.log("state", state.value.stopped);
+  console.log('state.stopped.matches("stopped)', state.matches("inactive"));
   const reverb = useRef();
   const delay = useRef();
   const busChannel = useRef();
 
   useEffect(() => {
-    switch (state.context.fx) {
+    switch (state.context.bus1fx1) {
       case "nofx":
-        busChannel.current?.disconnect();
+        // busChannel.current?.disconnect();
         busChannel.current = new Channel().toDestination();
         break;
       case "reverb":
         reverb.current = new Reverb(3).toDestination();
-        busChannel.current?.disconnect();
+        // busChannel.current?.disconnect();
         busChannel.current = new Channel().connect(reverb.current);
         busChannel.current.receive("reverb");
         break;
       case "delay":
         delay.current = new FeedbackDelay("8n", 0.5).toDestination();
-        busChannel.current?.disconnect();
+        // busChannel.current?.disconnect();
         busChannel.current = new Channel().connect(delay.current);
+        busChannel.current.receive("delay");
+        break;
+      default:
+        break;
+    }
+
+    switch (state.context.bus1fx2) {
+      case "nofx":
+        // busChannel.current?.disconnect();
+        busChannel.current = new Channel().toDestination();
+        break;
+      case "reverb":
+        reverb.current = new Reverb(3).toDestination();
+        // busChannel.current?.disconnect();
+        busChannel.current = new Channel().chain(reverb.current);
+        busChannel.current.receive("reverb");
+        break;
+      case "delay":
+        delay.current = new FeedbackDelay("8n", 0.5).toDestination();
+        // busChannel.current?.disconnect();
+        busChannel.current = new Channel().chain(delay.current);
         busChannel.current.receive("delay");
         break;
       default:
@@ -46,7 +69,8 @@ export const Mixer = ({ song }) => {
       delay.current?.dispose();
       busChannel.current?.dispose();
     };
-  }, [state.context.fx]);
+  }, [state.context.bus1fx2, state.context.bus1fx1]);
+
   return state.value === "loading" ? (
     <Loader song={song} />
   ) : (
@@ -54,8 +78,28 @@ export const Mixer = ({ song }) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      {state.context.fx === "reverb" ? (
-        <Reverber reverb={reverb.current} />
+      {state.context.bus1fx1 === "reverb" ||
+      state.context.bus1fx2 === "reverb" ? (
+        state.value.stopped === "active" ? (
+          <Rnd
+            className="fx-panel"
+            default={{
+              x: 0,
+              y: 0,
+              width: 320,
+              height: 200,
+            }}
+          >
+            <button
+              onClick={(e) => {
+                send("TOGGLE");
+              }}
+            >
+              X
+            </button>
+            <Reverber reverb={reverb.current} />
+          </Rnd>
+        ) : null
       ) : null}
       <div className="channels">
         <div>

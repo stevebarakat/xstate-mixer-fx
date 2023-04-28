@@ -171,6 +171,10 @@
   background: black;
 }
 
+.fx-panel {
+  background: black;
+}
+
 .ghost,
 .clock {
   display: grid;

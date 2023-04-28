@@ -7,16 +7,30 @@ function BusOne({ busChannel }) {
   return (
     <div>
       <select
-        name="track-fx"
-        id="fx-select"
+        name="track1-fx1"
+        id="fx-select-1"
         onChange={(e) => {
           send({
-            type: "SET_FX",
+            type: "SET_BUS1_FX1",
             target: e.target,
           });
         }}
       >
-        <option value="nofx">No FX</option>
+        <option value="nofx">FX 1</option>
+        <option value="reverb">Reverb</option>
+        <option value="delay">Delay</option>
+      </select>
+      <select
+        name="track1-fx2"
+        id="fx-select-2"
+        onChange={(e) => {
+          send({
+            type: "SET_BUS1_FX2",
+            target: e.target,
+          });
+        }}
+      >
+        <option value="nofx">FX 2</option>
         <option value="reverb">Reverb</option>
         <option value="delay">Delay</option>
       </select>

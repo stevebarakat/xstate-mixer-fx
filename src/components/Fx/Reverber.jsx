@@ -1,8 +1,7 @@
-export default function Reverber({ reverb }) {
-  const changeReverbsMix = (e) => {
-    reverb.wet.value = e.target.value;
-  };
+import { MixerMachineContext } from "../../App";
 
+export default function Reverber({ reverb }) {
+  const [, send] = MixerMachineContext.useActor();
   return (
     <div>
       <h3>Reverb</h3>
@@ -15,7 +14,13 @@ export default function Reverber({ reverb }) {
           min={0}
           max={1}
           step={0.01}
-          onChange={changeReverbsMix}
+          onChange={(e) => {
+            send({
+              type: "CHANGE_REVERBS_MIX",
+              target: e.target,
+              reverb,
+            });
+          }}
         />
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -27,6 +32,13 @@ export default function Reverber({ reverb }) {
           min={0}
           max={1}
           step={0.01}
+          onChange={(e) => {
+            send({
+              type: "CHANGE_REVERBS_PREDELAY",
+              target: e.target,
+              reverb,
+            });
+          }}
         />
       </div>
       <div style={{ display: "flex", flexDirection: "column" }}>
@@ -38,6 +50,13 @@ export default function Reverber({ reverb }) {
           min={0.1}
           max={20}
           step={0.1}
+          onChange={(e) => {
+            send({
+              type: "CHANGE_REVERBS_DECAY",
+              target: e.target,
+              reverb,
+            });
+          }}
         />
       </div>
     </div>

@@ -14,7 +14,7 @@ const initialSolos = currentTracks.map((currentTrack) => currentTrack.solo);
 
 export const mixerMachine = createMachine(
   {
-    /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAxAJQFEBlAgFQG0AGAXUVAAcB7WVAF1UYDs6R1EAWAKwA2AHT8AHJX7CJAdkEAaEAE9EAWgCMmuaOGVBM+YIC+J5Wky5CAdQCSAOQAiVWkhBMW7Ljz4IJmgBMogCcmpSaIoFKqhqBIZSiAMz8SQpmFhjYOABiOa48nmwc3O5+-NGilMLC-NXRymoI6mn8oppJgQHRGSCW2QDCABIAgg4A4gQA+gBqAPIAMgCqALIEBe5F3qWgfhIhYprCcgfGjRqRmuIHlCFppuZ9WbjDY5NTKyOOs4ur6zSFZjFHxlRA1YKBFL3c7NCpJURRB6ZKw4V4TaYABTGGwYQO2vkQUl0QiSQRiTSSEjEcih6Ue-VwpDm43GC2mREWcxxHjxJQJ-hEehCIUCmjOsWagUSFUEcm6SKeKKZLLZHyWpH+blxXj5oIQckoElE8VkChhdwRwh69OeogANowAIYQVCcKA4BZzEZOAguAGbXkg3aIMXBJKUShyskwrRU0KCUnW5HYUT0O2OlSu91YpYkblbXXBhBS4QwnSJWXy3oM1PpzNu-AEAZzPB+rU8nVB3iIJJJQTiWWURPkxCi3SBGmpOnJrC1jNZnAYhYjACaACERgMANL5wM7bvNQT9mkSLrRiVafv3au22CsRj0eiQRfLle7zv7vyi+HhO5miWUtStIKjWd4Pk+ECoqM6JTEuq4btuHxzD677Ap+o4SPCYQnKaI4III4RVBOwFmI8nCMBAcA8AygIfvyWhDqIJ5ng0F4Tm0JJkjeVj2k6LpurRaH8pIegdCxeGxmIIQJlxNo8Wm84CQGdF6pQMKtAi3EpmBj6QIJ+J6joRr8Dcf4SSEbTyPs9QPGYQA */
+    /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAxAJQFEBlAgFQG0AGAXUVAAcB7WVAF1UYDs6R1EAWAKwA2AHT8AHJX7CJAdkEAaEAE9EAWgCMmuaOGVBM+YIC+J5Wky5CAdQCSAOQAiVWkhBMW7Ljz4IJmgBMogCcmpSaIoFKqhqBIZSiAMz8SQpmFhjYOABiOa48nmwc3O5+-NGilMLC-NXRymoI6mn8oppJgQHRGSCW2QDCABIAgg4A4gQA+gBqAPIAMgCqALIEBe5F3qWgfhIhYprCcgfGjRqRmuIHlCFppuZ9WbjDY5NTKyOOs4ur6zSFZjFHxlRA1YKBFL3c7NCpJURRB6ZKw4V4TaYAISWRB+yzWGwYQO2vg0-CC4jJdWEDViCCSnQRSQS1KRTxRJFIUyxRE0UxyAA1NASPESSiTmmkQsl+HJhIiYepIYlBEz6qz+rgOVzsbyBYFhVsxaCJTVxGqYUIrrU1b0NajRuipgAFMYG0Ug3aIKS6IRJIIxJpJCRiORQ9KPO2kObjcYLaZERZzN1eI2e-wiPQhEKBTRnWmKxIVQRybrq544KMxuMfJakf5uQkpj28RBySgSUTxWQKGF3BEs23ltHvQgzAh4DE4lZ2fnJ4E7FsSkt6GlNTRhUTBuS58PIwYOkcEMcTnFOwhOAgLEYATTnxON6kt4k0VNXYLa9JCElSu7Z+7e0yjuOk5TBeAw3neqaLo+2gUiq-oKnIH5HK+ZZWKIAA2jAAIYQKgnBQDgCxzCMF4uACmzugufi5sESSUJQJYIfmuZiCE8E9BGzyiPQGHYSo+GES62L1oCTbUYggTVDCOjKkxnF7lgPF8QJBGiPh2EAMbsAAbmAFbRrGomUeJ4pBFc+zftCtJBB2Og7mh2DKfxgmiFpun6ZWRmQc2fg5roCjyQGGiCMEgiWT+jlKbArCMPQ9CQDgTpXreFGNvO4o5vC4R3D2tJBiGYZRaIMVxQlEDqZw7moHpBlVsZ6X3mmTKHFmOZ5k0dRSoEMi3Pcg7oaV8WQG52k1Z5hlxj5El0gc7RtQ5Fq3J2vW5Q8jycIwEBwDwGpiRlD4HAqgRIeIHHFVhuGCftTWLpIegdF0zFNFowahOdA1ObxLkETdUF+I+EgKi+iTtl+kWfUp32qVAlXVXpf2+YglAwoIuYIpDzkw6NHmIzNKO0nKSSY0N5V4+KKR2QtHWIJ0VxIfoa0k7Fw0VRpY0IyZB3NXN67ZottKCAYK2M-1XGDSz5U4+N5PGi1838zTCDCEyogM314ZmEAA */
     id: "mixer",
     initial: "loading",
     context: {
@@ -24,7 +24,7 @@ export const mixerMachine = createMachine(
       pans: initialPans,
       solos: initialSolos,
       mutes: initialMutes,
-      fx: "nofx",
+      bus1fx1: "nofx",
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -33,20 +33,50 @@ export const mixerMachine = createMachine(
       CHANGE_VOLUME: { actions: "changeVolume" },
       CHANGE_MAIN_VOLUME: { actions: "changeMainVolume" },
       CHANGE_BUS_VOLUME: { actions: "changeBusVolume" },
-      SET_FX: { actions: "setFx" },
+      SET_BUS1_FX1: { actions: "setBus1Fx1" },
+      SET_BUS1_FX2: { actions: "setBus1Fx2" },
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
+      CHANGE_REVERBS_MIX: { actions: "chengeReverbsMix" },
+      CHANGE_REVERBS_PREDELAY: { actions: "changeReverbsPredelay" },
+      CHANGE_REVERBS_DECAY: { actions: "changeReverbsDecay" },
     },
 
     states: {
       loading: { on: { LOADED: "stopped" } },
       playing: {
+        initial: "active",
+        states: {
+          inactive: {
+            on: {
+              TOGGLE: "active",
+            },
+          },
+          active: {
+            on: {
+              TOGGLE: "inactive",
+            },
+          },
+        },
         on: {
           PAUSE: { actions: "pause", target: "stopped" },
         },
       },
       stopped: {
+        initial: "active",
+        states: {
+          inactive: {
+            on: {
+              TOGGLE: "active",
+            },
+          },
+          active: {
+            on: {
+              TOGGLE: "inactive",
+            },
+          },
+        },
         on: {
           PLAY: { actions: "play", target: "playing" },
         },
@@ -92,8 +122,12 @@ export const mixerMachine = createMachine(
         return [assign({ busVolume: parseFloat(target.value) }), volume];
       }),
 
-      setFx: assign((context, { target }) => {
-        context.fx = target.value;
+      setBus1Fx1: assign((context, { target }) => {
+        context.bus1fx1 = target.value;
+      }),
+
+      setBus1Fx2: assign((context, { target }) => {
+        context.bus1fx2 = target.value;
       }),
 
       changeVolume: pure((context, { target, channel }) => {
@@ -159,6 +193,18 @@ export const mixerMachine = createMachine(
           JSON.stringify([...currentTracks])
         );
         return [assign({ solo: tempSolos }), soloChannel];
+      }),
+
+      chengeReverbsMix: assign((context, { target, reverb }) => {
+        reverb.wet.value = target.value;
+      }),
+
+      changeReverbsPredelay: assign((context, { target, reverb }) => {
+        reverb.preDelay = target.value;
+      }),
+
+      changeReverbsDecay: assign((context, { target, reverb }) => {
+        reverb.decay = target.value;
       }),
     },
   }
