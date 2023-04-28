@@ -71,9 +71,13 @@
   border: 1px dashed var(--primary-color);
 }
 
-.channels > div:nth-last-of-type(2) input[type="range"],
 .channels > div:last-of-type input[type="range"] {
   height: 100%;
+}
+
+.channels > div:nth-last-of-type(2) {
+  height: 100%;
+  background: black;
 }
 
 .range-x {
@@ -151,7 +155,7 @@
 
 #fx-select {
   width: 100%;
-  padding: 4px;
+  padding: 4px 12px;
   border-radius: 8px;
   background: black;
   border: none;
