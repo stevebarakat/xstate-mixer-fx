@@ -38,7 +38,6 @@
 }
 
 .channels > div {
-  height: 76.5%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -173,6 +172,8 @@
 .fx-panel {
   background: black;
   padding: 36px;
+  z-index: 99;
+  border-radius: 12px;
 }
 
 .ghost,
