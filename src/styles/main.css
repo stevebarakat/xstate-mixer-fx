@@ -89,6 +89,7 @@
   width: 8ch;
 }
 
+.bus-btn,
 .chan-strip-btn {
   width: 100%;
   height: fit-content;
@@ -98,9 +99,15 @@
   gap: 8px;
 }
 
+.bus-btn {
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.bus-btn label,
 .chan-strip-btn label {
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 8px;
   background: black;
   white-space: nowrap;
   user-select: none;
@@ -112,16 +119,25 @@
   font-weight: 900;
 }
 
+.bus-btn label {
+  padding: 12px;
+  width: 50%;
+}
+
+.bus-btn input[type="checkbox"],
 .chan-strip-btn input[type="checkbox"] {
   position: absolute;
   appearance: none;
 }
+
+.bus-btn input[type="checkbox"]:checked + label,
 .chan-strip-btn input[type="checkbox"]:checked + label {
   background: var(--primary-color);
   color: black;
   transition: all 0.2s;
 }
 
+.bus-btn input[type="checkbox"]:hover + label,
 .chan-strip-btn input[type="checkbox"]:hover + label {
   border: 1px solid var(--primary-color);
   transition: all 0.2s;
