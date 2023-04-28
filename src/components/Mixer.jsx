@@ -2,6 +2,7 @@ import useChannelStrip from "../hooks/useChannelStrip";
 import Transport from "./Transport";
 import Loader from "./Loader";
 import ChannelStrip from "./ChannelStrip";
+import Reverber from "./Fx/Reverber";
 import { MixerMachineContext } from "../App";
 import MainVolume from "./MainVolume";
 import BusOne from "./BusOne";
@@ -11,6 +12,8 @@ export const Mixer = ({ song }) => {
   const [state] = MixerMachineContext.useActor();
   const [channels] = useChannelStrip({ tracks });
 
+  console.log("state.context", state.context);
+
   return state.value === "loading" ? (
     <Loader song={song} />
   ) : (
@@ -18,6 +21,7 @@ export const Mixer = ({ song }) => {
       <div>
         {song.artist} - {song.title}
       </div>
+      {state.context.fx === "reverb" ? <Reverber /> : null}
       <div className="channels">
         <div>
           {tracks.map((track, i) => (

@@ -24,7 +24,7 @@ export const mixerMachine = createMachine(
       pans: initialPans,
       solos: initialSolos,
       mutes: initialMutes,
-      fx: null,
+      fx: "nofx",
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },

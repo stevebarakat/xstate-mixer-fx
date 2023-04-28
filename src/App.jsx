@@ -14,9 +14,15 @@ function App() {
 
   function onChange(e) {
     let currentTracks = [];
+    let currentMix = {};
     switch (e.target.value) {
       case "roxanne":
         localStorage.setItem("song", JSON.stringify(roxanne));
+        currentMix = {
+          songSlug: "roxanne",
+          reverbsMix: [0.5, 0.5],
+        };
+        localStorage.setItem("currentMix", JSON.stringify(currentMix));
         currentTracks = roxanne.tracks;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         window.location.reload();

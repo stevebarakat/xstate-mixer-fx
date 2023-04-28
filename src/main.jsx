@@ -4,7 +4,6 @@ import App from "./App";
 import "./styles/reset.css";
 import "./styles/main.css";
 import "./styles/utils.css";
-import { roxanne } from "./songs";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
