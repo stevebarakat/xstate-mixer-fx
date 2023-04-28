@@ -7,11 +7,13 @@ import { Destination } from "tone";
 function ChannelStrip({ track, trackIndex, channel, channels }) {
   return (
     <div>
-      <select name="track-fx" id="fx-select">
-        <option value="">No FX</option>
-        <option value="reverb">Reverb</option>
-        <option value="delay">Delay</option>
-      </select>
+      <div className="fx-select">
+        <select name="track-fx" id="fx-select">
+          <option value="">No FX</option>
+          <option value="reverb">Reverb</option>
+          <option value="delay">Delay</option>
+        </select>
+      </div>
       <div className="bus-btn">
         <input
           id={`bus1${trackIndex}`}

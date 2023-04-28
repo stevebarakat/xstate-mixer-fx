@@ -153,14 +153,22 @@
   transition: all 0.2s;
 }
 
-#fx-select {
-  width: 100%;
-  padding: 4px 12px;
-  border-radius: 8px;
-  background: black;
+#fx-select,
+.fx-select {
+  width: 90%;
+  padding: 4px 0;
+  background: none;
   border: none;
   margin-bottom: 4px;
   color: var(--primary-color);
+  max-width: 120px;
+}
+
+.fx-select {
+  width: 100%;
+  padding: 0;
+  border-radius: 8px;
+  background: black;
 }
 
 .ghost,
