@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { array as fx } from "../utils";
 import { MixerMachineContext } from "../App";
 import Range from "./Range";
 
@@ -19,35 +20,27 @@ function BusOne({ busChannel }) {
       >
         {state.hasTag("active") ? "Close" : "Open"} FX
       </button>
-      <select
-        name="track1-fx1"
-        id="fx-select-1.1"
-        onChange={(e) => {
-          send({
-            type: "SET_BUS1_FX1",
-            target: e.target,
-          });
-        }}
-        defaultValue={state.context.bus1fx1}
-      >
-        <option value="nofx">FX 1</option>
-        <option value="reverb">Reverb</option>
-        <option value="delay">Delay</option>
-      </select>
-      <select
-        name="track1-fx2"
-        id="fx-select-2.1"
-        onChange={(e) => {
-          send({
-            type: "SET_BUS1_FX2",
-            target: e.target,
-          });
-        }}
-      >
-        <option value="nofx">FX 2</option>
-        <option value="reverb">Reverb</option>
-        <option value="delay">Delay</option>
-      </select>
+
+      {fx(2).map((_, i) => {
+        return (
+          <select
+            name={`track1-fx${i}`}
+            id={`fx-select-1.${i}`}
+            onChange={(e) => {
+              send({
+                type: `SET_BUS1_FX${i + 1}`,
+                target: e.target,
+              });
+            }}
+            defaultValue={state.context[`bus1fx${i}`]}
+          >
+            <option value="nofx">{`FX ${i + 1}`}</option>
+            <option value="reverb">Reverb</option>
+            <option value="delay">Delay</option>
+          </select>
+        );
+      })}
+
       <div className="channel">
         <div className="window">{`${state.context.busVolume.toFixed(
           0

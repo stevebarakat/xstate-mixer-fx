@@ -99,6 +99,7 @@ export const Mixer = ({ song }) => {
               width: 320,
               height: "auto",
             }}
+            cancel="input"
           >
             <button
               onClick={(e) => {
