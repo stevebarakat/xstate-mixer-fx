@@ -23,23 +23,25 @@ export const Mixer = ({ song }) => {
 
   useEffect(() => {
     fx(2).forEach((_, i) => {
-      switch (state.context[`bus1fx${i + 1}`]) {
-        case "nofx":
-          busChannels.current[i] = new Channel().toDestination();
-          break;
-        case "reverb":
-          reverb.current = new Reverb(3).toDestination();
-          busChannels.current[i] = new Channel().connect(reverb.current);
-          busChannels.current[i].receive("reverb");
-          break;
-        case "delay":
-          delay.current = new FeedbackDelay("8n", 0.5).toDestination();
-          busChannels.current[i] = new Channel().connect(delay.current);
-          busChannels.current[i].receive("delay");
-          break;
-        default:
-          break;
-      }
+      fx(2).forEach((_, j) => {
+        switch (state.context[`bus${i + 1}fx${j + 1}`]) {
+          case "nofx":
+            busChannels.current[i] = new Channel().toDestination();
+            break;
+          case "reverb":
+            reverb.current = new Reverb(3).toDestination();
+            busChannels.current[i] = new Channel().connect(reverb.current);
+            busChannels.current[i].receive("reverb");
+            break;
+          case "delay":
+            delay.current = new FeedbackDelay("8n", 0.5).toDestination();
+            busChannels.current[i] = new Channel().connect(delay.current);
+            busChannels.current[i].receive("delay");
+            break;
+          default:
+            break;
+        }
+      });
     });
 
     return () => {
@@ -58,28 +60,29 @@ export const Mixer = ({ song }) => {
         {song.artist} - {song.title}
       </div>
 
-      {(state.context.bus1fx1 !== "nofx" || state.context.bus1fx2 !== "nofx") &&
-        state.hasTag("active") && (
-          <Rnd
-            className="fx-panel"
-            default={{
-              x: 0,
-              y: 0,
-              width: 320,
-              height: "auto",
+      {/* {(state.context.bus1fx1 !== "nofx" || state.context.bus1fx2 !== "nofx") && */}
+      {state.hasTag("active") && (
+        <Rnd
+          className="fx-panel"
+          default={{
+            x: 0,
+            y: 0,
+            width: 320,
+            height: "auto",
+          }}
+          cancel="input"
+        >
+          <button
+            onClick={(e) => {
+              send("TOGGLE");
             }}
-            cancel="input"
           >
-            <button
-              onClick={(e) => {
-                send("TOGGLE");
-              }}
-            >
-              X
-            </button>
+            X
+          </button>
 
-            {fx(2).map((_, i) => {
-              switch (state.context[`bus1fx${i}`]) {
+          {fx(2).map((_, i) => {
+            return fx(2).map((_, j) => {
+              switch (state.context[`bus${i}fx${j}`]) {
                 case "reverb":
                   return <Reverber key={i} reverb={reverb.current} />;
                 case "delay":
@@ -88,9 +91,10 @@ export const Mixer = ({ song }) => {
                   break;
               }
               return null;
-            })}
-          </Rnd>
-        )}
+            });
+          })}
+        </Rnd>
+      )}
       <div className="channels">
         <div>
           {tracks.map((track, i) => (

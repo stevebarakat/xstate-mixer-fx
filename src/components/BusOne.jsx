@@ -3,7 +3,7 @@ import { array as fx } from "../utils";
 import { MixerMachineContext } from "../App";
 import Range from "./Range";
 
-function BusOne({ busChannel }) {
+function BusOne({ busChannel, busIndex }) {
   const [state, send] = MixerMachineContext.useActor();
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
 
@@ -25,15 +25,15 @@ function BusOne({ busChannel }) {
         return (
           <select
             key={i}
-            name={`track1-fx${i}`}
-            id={`fx-select-1.${i}`}
+            // name={`bus${busIndex}-fx${i}`}
+            id={`bus${busIndex}fx${i}`}
             onChange={(e) => {
               send({
-                type: `SET_BUS1_FX${i + 1}`,
+                type: `SET_BUS${busIndex + 1}_FX${i + 1}`,
                 target: e.target,
               });
             }}
-            defaultValue={state.context[`bus1fx${i}`]}
+            defaultValue={state.context[`bus${busIndex}fx${i}`]}
           >
             <option value="nofx">{`FX ${i + 1}`}</option>
             <option value="reverb">Reverb</option>
