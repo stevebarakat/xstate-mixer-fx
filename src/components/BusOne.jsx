@@ -7,9 +7,6 @@ function BusOne({ busChannel, busIndex }) {
   const [state, send] = MixerMachineContext.useActor();
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
 
-  console.log("state.context.bus1fx1", state.context.bus1fx1);
-  console.log("currentMix", currentMix);
-
   return (
     <div>
       <button
@@ -35,8 +32,8 @@ function BusOne({ busChannel, busIndex }) {
             defaultValue={state.context[`bus${busIndex}fx${i}`]}
           >
             <option value="nofx">{`FX ${i + 1}`}</option>
-            <option value="reverb1">Reverb</option>
-            <option value="delay1">Delay</option>
+            <option value={`reverb${busIndex + 1}`}>Reverb</option>
+            <option value={`delay${busIndex + 1}`}>Delay</option>
           </select>
         );
       })}

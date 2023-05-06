@@ -19,6 +19,8 @@ export const Mixer = ({ song }) => {
 
   const reverb1 = useRef();
   const delay1 = useRef();
+  const reverb2 = useRef();
+  const delay2 = useRef();
   const busChannels = useRef([]);
 
   useEffect(() => {
@@ -29,16 +31,26 @@ export const Mixer = ({ song }) => {
             busChannels.current[i] = new Channel().toDestination();
             break;
           case "reverb1":
+            console.log("reverb1", reverb1);
             reverb1.current = new Reverb(3).toDestination();
-            busChannels.current[i]?.disconnect();
-            busChannels.current[i] = new Channel().connect(reverb1.current);
-            busChannels.current[i].receive("reverb1");
+            busChannels.current[0] = new Channel().connect(reverb1.current);
+            busChannels.current[0].receive("reverb1");
             break;
           case "delay1":
             delay1.current = new FeedbackDelay("8n", 0.5).toDestination();
-            busChannels.current[i]?.disconnect();
-            busChannels.current[i] = new Channel().connect(delay1.current);
-            busChannels.current[i].receive("delay1");
+            busChannels.current[0] = new Channel().connect(delay1.current);
+            busChannels.current[0].receive("delay1");
+            break;
+          case "reverb2":
+            console.log("reverb2", reverb2);
+            reverb2.current = new Reverb(3).toDestination();
+            busChannels.current[1] = new Channel().connect(reverb2.current);
+            busChannels.current[1].receive("reverb2");
+            break;
+          case "delay2":
+            delay2.current = new FeedbackDelay("8n", 0.5).toDestination();
+            busChannels.current[1] = new Channel().connect(delay2.current);
+            busChannels.current[1].receive("delay2");
             break;
           default:
             break;
@@ -49,6 +61,8 @@ export const Mixer = ({ song }) => {
     return () => {
       reverb1.current?.dispose();
       delay1.current?.dispose();
+      reverb2.current?.dispose();
+      delay2.current?.dispose();
       busChannels.current.forEach((busChannel) => busChannel.dispose());
       busChannels.current = [];
     };
@@ -89,6 +103,10 @@ export const Mixer = ({ song }) => {
                   return <Reverber key={i} reverb={reverb1.current} />;
                 case "delay1":
                   return <Delay key={i} delay={delay1.current} />;
+                case "reverb2":
+                  return <Reverber key={i} reverb={reverb2.current} />;
+                case "delay2":
+                  return <Delay key={i} delay={delay2.current} />;
                 default:
                   break;
               }
