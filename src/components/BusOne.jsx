@@ -35,7 +35,7 @@ function BusOne({ busChannel, busIndex }) {
             defaultValue={state.context[`bus${busIndex}fx${i}`]}
           >
             <option value="nofx">{`FX ${i + 1}`}</option>
-            <option value="reverb">Reverb</option>
+            <option value="reverb1">Reverb</option>
             <option value="delay">Delay</option>
           </select>
         );

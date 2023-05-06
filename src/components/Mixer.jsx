@@ -17,7 +17,7 @@ export const Mixer = ({ song }) => {
   const [state, send] = MixerMachineContext.useActor();
   const [channels] = useChannelStrip({ tracks });
 
-  const reverb = useRef();
+  const reverb1 = useRef();
   const delay = useRef();
   const busChannels = useRef([]);
 
@@ -28,13 +28,15 @@ export const Mixer = ({ song }) => {
           case "nofx":
             busChannels.current[i] = new Channel().toDestination();
             break;
-          case "reverb":
-            reverb.current = new Reverb(3).toDestination();
-            busChannels.current[i] = new Channel().connect(reverb.current);
-            busChannels.current[i].receive("reverb");
+          case "reverb1":
+            reverb1.current = new Reverb(3).toDestination();
+            busChannels.current[i]?.disconnect();
+            busChannels.current[i] = new Channel().connect(reverb1.current);
+            busChannels.current[i].receive("reverb1");
             break;
           case "delay":
             delay.current = new FeedbackDelay("8n", 0.5).toDestination();
+            busChannels.current[i]?.disconnect();
             busChannels.current[i] = new Channel().connect(delay.current);
             busChannels.current[i].receive("delay");
             break;
@@ -45,7 +47,7 @@ export const Mixer = ({ song }) => {
     });
 
     return () => {
-      reverb.current?.dispose();
+      reverb1.current?.dispose();
       delay.current?.dispose();
       busChannels.current.forEach((busChannel) => busChannel.dispose());
       busChannels.current = [];
@@ -84,7 +86,7 @@ export const Mixer = ({ song }) => {
             return fx(2).map((_, j) => {
               switch (state.context[`bus${i}fx${j}`]) {
                 case "reverb":
-                  return <Reverber key={i} reverb={reverb.current} />;
+                  return <Reverber key={i} reverb={reverb1.current} />;
                 case "delay":
                   return <Delay key={i} delay={delay.current} />;
                 default:
