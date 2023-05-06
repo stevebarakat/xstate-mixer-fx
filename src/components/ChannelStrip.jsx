@@ -30,7 +30,20 @@ function ChannelStrip({ track, trackIndex, channel, channels }) {
           }}
         />
         <label htmlFor={`bus1${trackIndex}`}>1</label>
-        <input id={`bus2${trackIndex}`} type="checkbox" />
+        <input
+          id={`bus2${trackIndex}`}
+          type="checkbox"
+          onChange={(e) => {
+            const id = e.target.id.at(-1);
+            if (e.target.checked) {
+              channels[id].send("reverb");
+              channels[id].send("delay");
+            } else {
+              channels[id].disconnect();
+              channels[id].connect(Destination);
+            }
+          }}
+        />
         <label htmlFor={`bus2${trackIndex}`}>2</label>
       </div>
       <div className="channel">

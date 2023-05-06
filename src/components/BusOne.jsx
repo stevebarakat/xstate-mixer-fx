@@ -25,7 +25,6 @@ function BusOne({ busChannel, busIndex }) {
         return (
           <select
             key={i}
-            // name={`bus${busIndex}-fx${i}`}
             id={`bus${busIndex}fx${i}`}
             onChange={(e) => {
               send({
@@ -47,7 +46,6 @@ function BusOne({ busChannel, busIndex }) {
           0
         )} dB`}</div>
         <Range
-          id="main"
           className="range-y"
           min={-100}
           max={12}

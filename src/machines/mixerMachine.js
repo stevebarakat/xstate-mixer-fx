@@ -38,6 +38,8 @@ export const mixerMachine = createMachine(
       CHANGE_BUS_VOLUME: { actions: "changeBusVolume" },
       SET_BUS1_FX1: { actions: "setBus1Fx1" },
       SET_BUS1_FX2: { actions: "setBus1Fx2" },
+      SET_BUS2_FX1: { actions: "setBus2Fx1" },
+      SET_BUS2_FX2: { actions: "setBus2Fx2" },
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
@@ -134,19 +136,20 @@ export const mixerMachine = createMachine(
         return [assign({ busVolume: parseFloat(target.value) }), volume];
       }),
 
-      // make pure
       setBus1Fx1: assign((context, { target }) => {
-        const trackIndex = target.id.at(-1);
         context.bus1fx1 = target.value;
-        currentTracks[trackIndex].bus1fx1 = target.value;
-        localStorage.setItem(
-          "currentTracks",
-          JSON.stringify([...currentTracks])
-        );
       }),
 
       setBus1Fx2: assign((context, { target }) => {
         context.bus1fx2 = target.value;
+      }),
+
+      setBus2Fx1: assign((context, { target }) => {
+        context.bus2fx1 = target.value;
+      }),
+
+      setBus2Fx2: assign((context, { target }) => {
+        context.bus2fx2 = target.value;
       }),
 
       changeVolume: pure((context, { target, channel }) => {
