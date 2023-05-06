@@ -50,43 +50,49 @@ export const mixerMachine = createMachine(
     states: {
       loading: { on: { LOADED: "stopped" } },
       playing: {
-        initial: "active",
+        initial: "inactive",
+        entry: "play",
         states: {
-          active: {
-            on: {
-              TOGGLE: "inactive",
-            },
-          },
           inactive: {
+            tags: "active",
             on: {
               TOGGLE: "active",
             },
           },
+          active: {
+            tags: "inactive",
+            on: {
+              TOGGLE: "inactive",
+            },
+          },
         },
         on: {
-          PAUSE: { actions: "pause", target: "stopped" },
+          PAUSE: { target: "stopped", actions: "pause" },
         },
       },
       stopped: {
-        initial: "active",
+        initial: "inactive",
         states: {
-          active: {
-            on: {
-              TOGGLE: "inactive",
-            },
-          },
           inactive: {
+            tags: "active",
             on: {
               TOGGLE: "active",
             },
           },
+          active: {
+            tags: "inactive",
+            on: {
+              TOGGLE: "inactive",
+            },
+          },
         },
         on: {
-          PLAY: { actions: "play", target: "playing" },
+          PLAY: { target: "playing" },
         },
       },
     },
     predictableActionArguments: true,
+    preserveActionOrder: true,
   },
 
   {

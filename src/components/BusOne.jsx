@@ -17,7 +17,7 @@ function BusOne({ busChannel }) {
           send("TOGGLE");
         }}
       >
-        {state.value.stopped === "active" ? "Close" : "Open"} FX
+        {state.hasTag("active") ? "Close" : "Open"} FX
       </button>
       <select
         name="track1-fx1"

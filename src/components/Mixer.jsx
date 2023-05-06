@@ -90,7 +90,7 @@ export const Mixer = ({ song }) => {
       </div>
 
       {(state.context.bus1fx1 !== "nofx" || state.context.bus1fx2 !== "nofx") &&
-        state.value.stopped === "active" && (
+        state.hasTag("active") && (
           <Rnd
             className="fx-panel"
             default={{
