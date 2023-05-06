@@ -16,17 +16,6 @@ export const Mixer = ({ song }) => {
   const tracks = song.tracks;
   const [state, send] = MixerMachineContext.useActor();
   const [channels] = useChannelStrip({ tracks });
-  const currentMix = JSON.parse(localStorage.getItem("currentMix"));
-
-  // const [busFxChoices, setBusFxChoices] = useState(() => {
-  //   if (currentMix.busFxChoices > tracks.length) {
-  //     return currentMix.busFxChoices;
-  //   } else {
-  //     return currentMix.busFxChoices.concat(
-  //       new Array(tracks.length - currentMix.busFxChoices.length).fill([])
-  //     );
-  //   }
-  // });
 
   const reverb = useRef();
   const delay = useRef();
@@ -88,18 +77,17 @@ export const Mixer = ({ song }) => {
               X
             </button>
 
-            {state.context.bus1fx1 === "reverb" && (
-              <Reverber reverb={reverb.current} />
-            )}
-            {state.context.bus1fx2 === "reverb" && (
-              <Reverber reverb={reverb.current} />
-            )}
-            {state.context.bus1fx1 === "delay" && (
-              <Delay reverb={delay.current} />
-            )}
-            {state.context.bus1fx2 === "delay" && (
-              <Delay reverb={delay.current} />
-            )}
+            {fx(2).map((_, i) => {
+              switch (state.context[`bus1fx${i}`]) {
+                case "reverb":
+                  return <Reverber reverb={reverb.current} />;
+                case "delay":
+                  return <Delay delay={delay.current} />;
+                default:
+                  break;
+              }
+              return null;
+            })}
           </Rnd>
         )}
       <div className="channels">
