@@ -24,6 +24,7 @@ function BusOne({ busChannel }) {
       {fx(2).map((_, i) => {
         return (
           <select
+            key={i}
             name={`track1-fx${i}`}
             id={`fx-select-1.${i}`}
             onChange={(e) => {

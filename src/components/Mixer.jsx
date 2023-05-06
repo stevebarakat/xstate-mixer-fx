@@ -80,9 +80,9 @@ export const Mixer = ({ song }) => {
             {fx(2).map((_, i) => {
               switch (state.context[`bus1fx${i}`]) {
                 case "reverb":
-                  return <Reverber reverb={reverb.current} />;
+                  return <Reverber key={i} reverb={reverb.current} />;
                 case "delay":
-                  return <Delay delay={delay.current} />;
+                  return <Delay key={i} delay={delay.current} />;
                 default:
                   break;
               }
