@@ -36,7 +36,7 @@ function BusOne({ busChannel, busIndex }) {
           >
             <option value="nofx">{`FX ${i + 1}`}</option>
             <option value="reverb1">Reverb</option>
-            <option value="delay">Delay</option>
+            <option value="delay1">Delay</option>
           </select>
         );
       })}

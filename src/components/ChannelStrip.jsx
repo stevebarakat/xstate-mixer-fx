@@ -22,7 +22,7 @@ function ChannelStrip({ track, trackIndex, channel, channels }) {
             const id = e.target.id.at(-1);
             if (e.target.checked) {
               channels[id].send("reverb1");
-              channels[id].send("delay");
+              channels[id].send("delay1");
             } else {
               channels[id].disconnect();
               channels[id].connect(Destination);
@@ -36,8 +36,8 @@ function ChannelStrip({ track, trackIndex, channel, channels }) {
           onChange={(e) => {
             const id = e.target.id.at(-1);
             if (e.target.checked) {
-              channels[id].send("reverb");
-              channels[id].send("delay");
+              channels[id].send("reverb2");
+              channels[id].send("delay2");
             } else {
               channels[id].disconnect();
               channels[id].connect(Destination);
