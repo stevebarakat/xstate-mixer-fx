@@ -7,10 +7,10 @@ import { roxanne } from "../songs";
 
 const context = getContext();
 const [song, currentTracks] = getSong(roxanne);
-// const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
-// const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
-// const initialMutes = currentTracks.map((currentTrack) => currentTrack.mute);
-// const initialSolos = currentTracks.map((currentTrack) => currentTrack.solo);
+const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
+const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
+const initialMutes = currentTracks.map((currentTrack) => currentTrack.mute);
+const initialSolos = currentTracks.map((currentTrack) => currentTrack.solo);
 
 export const mixerMachine = createMachine(
   {
@@ -20,12 +20,14 @@ export const mixerMachine = createMachine(
     context: {
       mainVolume: -32,
       busVolume: -32,
-      volumes: [-32, -32, -32, -32],
-      pans: [],
-      solos: [],
-      mutes: [],
+      volumes: initialVolumes,
+      pans: initialPans,
+      solos: initialSolos,
+      mutes: initialMutes,
       bus1fx1: "nofx",
       bus1fx2: "nofx",
+      bus2fx1: "nofx",
+      bus2fx2: "nofx",
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -166,13 +168,13 @@ export const mixerMachine = createMachine(
 
       changePan: pure((context, { target, channel }) => {
         const trackIndex = target.id.at(-1);
-        const value = target.value;
+        const value = parseFloat(target.value);
         const channelPan = () => {
           channel.pan.value = value;
         };
         const tempPans = context.pans;
-        tempPans[trackIndex] = parseFloat(value);
-        currentTracks[trackIndex].pan = parseFloat(value);
+        tempPans[trackIndex] = value;
+        currentTracks[trackIndex].pan = value;
         localStorage.setItem(
           "currentTracks",
           JSON.stringify([...currentTracks])
