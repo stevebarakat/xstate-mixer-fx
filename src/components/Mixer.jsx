@@ -19,23 +19,23 @@ export const Mixer = ({ song }) => {
 
   const reverb = useRef();
   const delay = useRef();
-  const busChannel = useRef();
+  const busChannels = useRef([]);
 
   useEffect(() => {
     fx(2).forEach((_, i) => {
       switch (state.context[`bus1fx${i + 1}`]) {
         case "nofx":
-          busChannel.current = new Channel().toDestination();
+          busChannels.current[i] = new Channel().toDestination();
           break;
         case "reverb":
           reverb.current = new Reverb(3).toDestination();
-          busChannel.current = new Channel().connect(reverb.current);
-          busChannel.current.receive("reverb");
+          busChannels.current[i] = new Channel().connect(reverb.current);
+          busChannels.current[i].receive("reverb");
           break;
         case "delay":
           delay.current = new FeedbackDelay("8n", 0.5).toDestination();
-          busChannel.current = new Channel().connect(delay.current);
-          busChannel.current.receive("delay");
+          busChannels.current[i] = new Channel().connect(delay.current);
+          busChannels.current[i].receive("delay");
           break;
         default:
           break;
@@ -45,7 +45,8 @@ export const Mixer = ({ song }) => {
     return () => {
       reverb.current?.dispose();
       delay.current?.dispose();
-      busChannel.current?.dispose();
+      busChannels.current.forEach((busChannel) => busChannel.dispose());
+      busChannels.current = [];
     };
   }, [state.context]);
 
@@ -102,7 +103,9 @@ export const Mixer = ({ song }) => {
             />
           ))}
         </div>
-        <BusOne busChannel={busChannel.current} />
+        {busChannels.current.map((busChannel, i) => (
+          <BusOne key={i} busChannel={busChannel} busIndex={i} />
+        ))}
         <MainVolume />
       </div>
       <Transport song={song} />
