@@ -3,7 +3,7 @@ import { array as fx } from "../utils";
 import { MixerMachineContext } from "../App";
 import Range from "./Range";
 
-function BusOne({ busChannel, busIndex }) {
+function Bus({ busChannel, busIndex }) {
   const [state, send] = MixerMachineContext.useActor();
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
 
@@ -39,10 +39,11 @@ function BusOne({ busChannel, busIndex }) {
       })}
 
       <div className="channel">
-        <div className="window">{`${state.context.busVolume.toFixed(
+        <div className="window">{`${state.context.busVolumes[busIndex].toFixed(
           0
         )} dB`}</div>
         <Range
+          id={`busVol${busIndex}`}
           className="range-y"
           min={-100}
           max={12}
@@ -50,16 +51,16 @@ function BusOne({ busChannel, busIndex }) {
           value={state.context.busVolume}
           onChange={(e) => {
             send({
-              type: "CHANGE_BUS_VOLUME",
+              type: "CHANGE_BUS_VOLUMES",
               target: e.target,
               channel: busChannel,
             });
           }}
         />
-        <span>Bus One</span>
+        <span>{`Bus ${busIndex + 1}`}</span>
       </div>
     </div>
   );
 }
 
-export default BusOne;
+export default Bus;
