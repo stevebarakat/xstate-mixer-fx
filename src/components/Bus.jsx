@@ -7,6 +7,8 @@ function Bus({ busChannel, busIndex }) {
   const [state, send] = MixerMachineContext.useActor();
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
 
+  const [busVolumes, setBusVolumes] = useState([-32, -32]);
+
   return (
     <div>
       <button
@@ -39,22 +41,25 @@ function Bus({ busChannel, busIndex }) {
       })}
 
       <div className="channel">
-        <div className="window">{`${state.context.busVolumes[busIndex].toFixed(
-          0
-        )} dB`}</div>
+        <div className="window">{`${busVolumes[busIndex].toFixed(0)} dB`}</div>
         <Range
           id={`busVol${busIndex}`}
           className="range-y"
           min={-100}
           max={12}
           step={0.1}
-          value={state.context.busVolume}
+          // value={busVolumes[busIndex]}
           onChange={(e) => {
-            send({
-              type: "CHANGE_BUS_VOLUMES",
-              target: e.target,
-              channel: busChannel,
-            });
+            const value = parseFloat(e.target.value);
+            busVolumes[busIndex] = value;
+            setBusVolumes([...busVolumes]);
+            console.log("busChannel", busChannel);
+            busChannel.volume.value = value;
+            // send({
+            //   type: "CHANGE_BUS_VOLUMES",
+            //   target: e.target,
+            //   channel: busChannel,
+            // });
           }}
         />
         <span>{`Bus ${busIndex + 1}`}</span>
