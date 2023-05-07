@@ -1,15 +1,20 @@
-import { MixerMachineContext } from "../../App";
 import { useState } from "react";
 
 export default function Delay({ delay, busIndex, fxIndex }) {
-  const [state, send] = MixerMachineContext.useActor();
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
+  const [delaysMix, setDelaysMix] = useState([
+    [-32, -32],
+    [-32, -32],
+  ]);
+  const [delaysTime, setDelaysTime] = useState([
+    [0.5, 0.5],
+    [0.5, 0.5],
+  ]);
   const [delaysFeedback, setDelaysFeedback] = useState([
     [0.5, 0.5],
     [0.5, 0.5],
   ]);
 
-  console.log("state.context.delaysFeedback", state.context.delaysFeedback);
   return (
     <div>
       <h3>Delay</h3>
@@ -23,11 +28,12 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           max={1}
           step={0.01}
           onChange={(e) => {
-            send({
-              type: "CHANGE_DELAYS_MIX",
-              target: e.target,
-              delay,
-            });
+            const value = parseFloat(e.target.value);
+            currentMix.delaysMix[busIndex][fxIndex] = value;
+            delaysMix[busIndex][fxIndex] = value;
+            delay.wet.value = value;
+            setDelaysMix([...delaysMix]);
+            localStorage.setItem("currentMix", JSON.stringify(currentMix));
           }}
         />
       </div>
@@ -41,11 +47,12 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           max={1}
           step={0.01}
           onChange={(e) => {
-            send({
-              type: "CHANGE_DELAYS_DELAY_TIME",
-              target: e.target,
-              delay,
-            });
+            const value = parseFloat(e.target.value);
+            currentMix.delaysTime[busIndex][fxIndex] = value;
+            delaysTime[busIndex][fxIndex] = value;
+            delay.delayTime.value = value;
+            setDelaysTime([...delaysTime]);
+            localStorage.setItem("currentMix", JSON.stringify(currentMix));
           }}
         />
       </div>
@@ -59,7 +66,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           max={1}
           step={0.01}
           value={delaysFeedback[busIndex][fxIndex]}
-          onChange={async (e) => {
+          onChange={(e) => {
             const value = parseFloat(e.target.value);
             currentMix.delaysFeedback[busIndex][fxIndex] = value;
             delaysFeedback[busIndex][fxIndex] = value;
