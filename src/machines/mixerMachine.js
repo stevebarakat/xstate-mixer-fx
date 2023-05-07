@@ -6,7 +6,7 @@ import { getSong } from "../utils/getSong";
 import { roxanne } from "../songs";
 
 const context = getContext();
-const [song, currentTracks] = getSong(roxanne);
+const [song, currentMix, currentTracks] = getSong(roxanne);
 const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
 const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
 const initialMutes = currentTracks.map((currentTrack) => currentTrack.mute);
@@ -28,6 +28,12 @@ export const mixerMachine = createMachine(
       bus1fx2: "nofx",
       bus2fx1: "nofx",
       bus2fx2: "nofx",
+      reverbsMix: currentMix.reverbsMix,
+      reverbsPreDelay: currentMix.reverbsPreDelay,
+      reverbsDecay: currentMix.reverbsDecay,
+      delaysMix: currentMix.delaysMix,
+      delaysTime: currentMix.delaysTime,
+      delaysFeedback: currentMix.delaysFeedback,
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -43,7 +49,7 @@ export const mixerMachine = createMachine(
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
-      CHANGE_REVERBS_MIX: { actions: "chengeReverbsMix" },
+      CHANGE_REVERBS_MIX: { actions: "changeReverbsMix" },
       CHANGE_REVERBS_PREDELAY: { actions: "changeReverbsPredelay" },
       CHANGE_REVERBS_DECAY: { actions: "changeReverbsDecay" },
       CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
@@ -217,7 +223,7 @@ export const mixerMachine = createMachine(
         return [assign({ solo: tempSolos }), soloChannel];
       }),
 
-      chengeReverbsMix: assign((context, { target, reverb }) => {
+      changeReverbsMix: assign((context, { target, reverb }) => {
         reverb.wet.value = target.value;
       }),
 
@@ -234,11 +240,14 @@ export const mixerMachine = createMachine(
       }),
 
       changeDelaysTime: assign((context, { target, delay }) => {
-        delay.delayTime = target.value;
+        delay.delayTime.value = target.value;
       }),
 
-      changeDelaysFeedback: assign((context, { target, delay }) => {
-        delay.feedback = target.value;
+      changeDelaysFeedback: assign((context, { target, busIndex, fxIndex }) => {
+        const value = parseFloat(target.value);
+        context.delaysFeedback[busIndex][fxIndex] = value;
+        currentMix.delaysFeedback[busIndex][fxIndex] = value;
+        localStorage.setItem("currentMix", JSON.stringify(currentMix));
       }),
     },
   }

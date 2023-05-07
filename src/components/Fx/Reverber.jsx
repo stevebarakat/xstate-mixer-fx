@@ -15,8 +15,9 @@ export default function Reverber({ reverb }) {
           max={1}
           step={0.01}
           onChange={(e) => {
+            // reverb &&
             send({
-              type: "CHANGE_REVERBS_MIX",
+              type: "SET_BUS1_FX1_REVERB_WET",
               target: e.target,
               reverb,
             });

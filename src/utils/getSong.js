@@ -12,9 +12,30 @@ export function getSong(defaultSong) {
   if (!currentMix) {
     currentMix = {
       songSlug: "roxanne",
-      reverbsMix: [0.5, 0.5],
-      bus1fx1: "nofx",
-      bus1fx2: "nofx",
+      reverbsMix: [
+        [0.5, 0.5],
+        [0.5, 0.5],
+      ],
+      reverbsPreDelay: [
+        [0.5, 0.5],
+        [0.5, 0.5],
+      ],
+      reverbsDecay: [
+        [0.5, 0.5],
+        [0.5, 0.5],
+      ],
+      delaysMix: [
+        [0.5, 0.5],
+        [0.5, 0.5],
+      ],
+      delaysTime: [
+        [0.5, 0.5],
+        [0.5, 0.5],
+      ],
+      delaysFeedback: [
+        [0.5, 0.5],
+        [0.5, 0.5],
+      ],
     };
     localStorage.setItem("currentMix", JSON.stringify(currentMix));
   }
@@ -27,16 +48,9 @@ export function getSong(defaultSong) {
       pan: 0,
       mute: false,
       solo: false,
-      activeBusses: [false, false],
-      reverbsMix: [0.5, 0.5],
-      reverbsPreDelay: [0.5, 0.5],
-      reverbsDecay: [0.5, 0.5],
-      delaysMix: [0.5, 0.5],
-      delaysTime: [1, 1],
-      delaysFeedback: [0.5, 0.5],
     }));
     localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
   }
 
-  return [song, currentTracks];
+  return [song, currentMix, currentTracks];
 }

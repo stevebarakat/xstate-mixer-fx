@@ -1,7 +1,9 @@
 import { MixerMachineContext } from "../../App";
 
-export default function Delay({ delay }) {
-  const [, send] = MixerMachineContext.useActor();
+export default function Delay({ delay, busIndex, fxIndex }) {
+  const [state, send] = MixerMachineContext.useActor();
+
+  console.log("state.context.delaysFeedback", state.context.delaysFeedback);
   return (
     <div>
       <h3>Delay</h3>
@@ -47,16 +49,21 @@ export default function Delay({ delay }) {
           type="range"
           className="simple-range"
           name="feedback"
-          min={0.1}
-          max={20}
-          step={0.1}
+          min={0}
+          max={1}
+          step={0.01}
           onChange={(e) => {
-            send({
-              type: "CHANGE_DELAYS_FEEDBACK",
-              target: e.target,
-              delay,
-            });
+            console.log("delay", delay);
+            delay.feedback.value = parseFloat(e.target.value);
+            // send({
+            //   type: "CHANGE_DELAYS_FEEDBACK",
+            //   target: e.target,
+            //   delay,
+            //   busIndex,
+            //   fxIndex,
+            // });
           }}
+          // value={state.context.delaysFeedback[busIndex][fxIndex]}
         />
       </div>
     </div>
