@@ -22,8 +22,9 @@ function TrackVolume({ channel, trackIndex }) {
           const value = parseFloat(e.target.value);
           const scaled = dBToPercent(scale(value));
           channel.volume.value = scaled;
-          volumes[trackIndex] = value;
-          setVolumes([...volumes]);
+          const tempVols = volumes;
+          tempVols[trackIndex] = value;
+          setVolumes([...tempVols]);
           currentTracks[trackIndex].volume = value;
           localStorage.setItem(
             "currentTracks",
