@@ -2,6 +2,7 @@ import { MixerMachineContext } from "../../App";
 
 export default function Delay({ delay, busIndex, fxIndex }) {
   const [state, send] = MixerMachineContext.useActor();
+  const currentMix = JSON.parse(localStorage.getItem("currentMix"));
 
   console.log("state.context.delaysFeedback", state.context.delaysFeedback);
   return (
@@ -52,18 +53,16 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           min={0}
           max={1}
           step={0.01}
-          onChange={(e) => {
-            console.log("delay", delay);
-            delay.feedback.value = parseFloat(e.target.value);
-            // send({
-            //   type: "CHANGE_DELAYS_FEEDBACK",
-            //   target: e.target,
-            //   delay,
-            //   busIndex,
-            //   fxIndex,
-            // });
+          onChange={async (e) => {
+            send({
+              type: "CHANGE_DELAYS_FEEDBACK",
+              target: e.target,
+              delay,
+              busIndex,
+              fxIndex,
+            });
           }}
-          // value={state.context.delaysFeedback[busIndex][fxIndex]}
+          defaultValue={currentMix.delaysFeedback[busIndex][fxIndex]}
         />
       </div>
     </div>

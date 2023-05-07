@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { array as fx } from "../utils";
-import { Channel, Reverb, FeedbackDelay, Destination } from "tone";
+import { Channel, Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
 import Transport from "./Transport";
 import Loader from "./Loader";
@@ -53,6 +53,15 @@ export const Mixer = ({ song }) => {
         }
       });
     });
+
+    // return () => {
+    //   reverb1.current?.dispose();
+    //   delay1.current?.dispose();
+    //   reverb2.current?.dispose();
+    //   delay2.current?.dispose();
+    //   busChannels.current.forEach((busChannel) => busChannel.dispose());
+    //   busChannels.current = [];
+    // };
   }, [state.context]);
 
   return state.value === "loading" ? (

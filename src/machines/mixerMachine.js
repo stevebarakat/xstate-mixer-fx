@@ -243,12 +243,14 @@ export const mixerMachine = createMachine(
         delay.delayTime.value = target.value;
       }),
 
-      changeDelaysFeedback: assign((context, { target, busIndex, fxIndex }) => {
-        const value = parseFloat(target.value);
-        context.delaysFeedback[busIndex][fxIndex] = value;
-        currentMix.delaysFeedback[busIndex][fxIndex] = value;
-        localStorage.setItem("currentMix", JSON.stringify(currentMix));
-      }),
+      changeDelaysFeedback: pure(
+        (context, { target, delay, busIndex, fxIndex }) => {
+          const value = parseFloat(target.value);
+          delay.feedback.value = parseFloat(value);
+          currentMix.delaysFeedback[busIndex][fxIndex] = value;
+          localStorage.setItem("currentMix", JSON.stringify(currentMix));
+        }
+      ),
     },
   }
 );
