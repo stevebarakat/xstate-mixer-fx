@@ -28,33 +28,17 @@ export const mixerMachine = createMachine(
       bus1fx2: "nofx",
       bus2fx1: "nofx",
       bus2fx2: "nofx",
-      reverbsMix: currentMix.reverbsMix,
-      reverbsPreDelay: currentMix.reverbsPreDelay,
-      reverbsDecay: currentMix.reverbsDecay,
-      delaysMix: currentMix.delaysMix,
-      delaysTime: currentMix.delaysTime,
-      delaysFeedback: currentMix.delaysFeedback,
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
       REWIND: { actions: "rewind" },
       FF: { actions: "fastForward" },
-      CHANGE_VOLUME: { actions: "changeVolume" },
-      CHANGE_MAIN_VOLUME: { actions: "changeMainVolume" },
-      CHANGE_BUS_VOLUME: { actions: "changeBusVolume" },
       SET_BUS1_FX1: { actions: "setBus1Fx1" },
       SET_BUS1_FX2: { actions: "setBus1Fx2" },
       SET_BUS2_FX1: { actions: "setBus2Fx1" },
       SET_BUS2_FX2: { actions: "setBus2Fx2" },
-      CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
-      CHANGE_REVERBS_MIX: { actions: "changeReverbsMix" },
-      CHANGE_REVERBS_PREDELAY: { actions: "changeReverbsPredelay" },
-      CHANGE_REVERBS_DECAY: { actions: "changeReverbsDecay" },
-      CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
-      CHANGE_DELAYS_DELAY_TIME: { actions: "changeDelaysTime" },
-      CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
     },
 
     states: {
@@ -126,22 +110,6 @@ export const mixerMachine = createMachine(
       rewind: () =>
         (t.seconds = t.seconds > 10 + song.start ? t.seconds - 10 : song.start),
 
-      changeMainVolume: pure((_, { target }) => {
-        const scaled = dBToPercent(scale(parseFloat(target.value)));
-        const volume = () => {
-          Destination.volume.value = scaled;
-        };
-        return [assign({ mainVolume: parseFloat(target.value) }), volume];
-      }),
-
-      changeBusVolume: pure((_, { target, channel }) => {
-        const scaled = dBToPercent(scale(parseFloat(target.value)));
-        const volume = () => {
-          channel.volume.value = scaled;
-        };
-        return [assign({ busVolume: parseFloat(target.value) }), volume];
-      }),
-
       setBus1Fx1: assign((context, { target }) => {
         context.bus1fx1 = target.value;
       }),
@@ -156,39 +124,6 @@ export const mixerMachine = createMachine(
 
       setBus2Fx2: assign((context, { target }) => {
         context.bus2fx2 = target.value;
-      }),
-
-      changeVolume: pure((context, { target, channel }) => {
-        const trackIndex = target.id.at(-1);
-        const value = target.value;
-        const scaled = dBToPercent(scale(parseFloat(value)));
-        const channelVolume = () => {
-          channel.volume.value = scaled;
-        };
-        const tempVols = context.volumes;
-        tempVols[trackIndex] = parseFloat(value);
-        currentTracks[trackIndex].volume = value;
-        localStorage.setItem(
-          "currentTracks",
-          JSON.stringify([...currentTracks])
-        );
-        return [assign({ volume: tempVols }), channelVolume];
-      }),
-
-      changePan: pure((context, { target, channel }) => {
-        const trackIndex = target.id.at(-1);
-        const value = parseFloat(target.value);
-        const channelPan = () => {
-          channel.pan.value = value;
-        };
-        const tempPans = context.pans;
-        tempPans[trackIndex] = value;
-        currentTracks[trackIndex].pan = value;
-        localStorage.setItem(
-          "currentTracks",
-          JSON.stringify([...currentTracks])
-        );
-        return [assign({ pan: tempPans }), channelPan];
       }),
 
       toggleMute: pure((context, { target, channel }) => {
@@ -221,33 +156,6 @@ export const mixerMachine = createMachine(
           JSON.stringify([...currentTracks])
         );
         return [assign({ solo: tempSolos }), soloChannel];
-      }),
-
-      changeReverbsMix: assign((context, { target, reverb }) => {
-        reverb.wet.value = target.value;
-      }),
-
-      changeReverbsPredelay: assign((context, { target, reverb }) => {
-        reverb.preDelay = target.value;
-      }),
-
-      changeReverbsDecay: assign((context, { target, reverb }) => {
-        reverb.decay = target.value;
-      }),
-
-      changeDelaysMix: assign((context, { target, delay }) => {
-        delay.wet.value = target.value;
-      }),
-
-      changeDelaysTime: assign((context, { target, delay }) => {
-        delay.delayTime.value = target.value;
-      }),
-
-      changeDelaysFeedback: assign((context, { target, busIndex, fxIndex }) => {
-        const value = parseFloat(target.value);
-        context.delaysFeedback[busIndex][fxIndex] = value;
-        currentMix.delaysFeedback[busIndex][fxIndex] = value;
-        localStorage.setItem("currentMix", JSON.stringify(currentMix));
       }),
     },
   }
