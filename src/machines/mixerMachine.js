@@ -162,21 +162,13 @@ export const mixerMachine = createMachine(
         context.bus2fx2 = target.value;
       }),
 
-      changeVolume: pure((context, { target, channel }) => {
+      changeVolume: pure((context, { target }) => {
         const trackIndex = target.id.at(-1);
         const value = target.value;
-        const scaled = dBToPercent(scale(parseFloat(value)));
-        const channelVolume = () => {
-          channel.volume.value = scaled;
-        };
+
         const tempVols = context.volumes;
         tempVols[trackIndex] = parseFloat(value);
-        currentTracks[trackIndex].volume = value;
-        localStorage.setItem(
-          "currentTracks",
-          JSON.stringify([...currentTracks])
-        );
-        return [assign({ volume: tempVols }), channelVolume];
+        return [assign({ volumes: tempVols })];
       }),
 
       changePan: pure((context, { target, channel }) => {

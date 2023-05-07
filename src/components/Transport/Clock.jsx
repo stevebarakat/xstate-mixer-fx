@@ -4,7 +4,7 @@ import { formatMilliseconds } from "../../utils";
 
 function Clock({ song }) {
   const requestRef = useRef(null);
-  const [clock, setClock] = useState(formatMilliseconds(0));
+  const [clock, setClock] = useState(null);
 
   // make sure song stops at end
   if (song.end !== null && song.start !== null) {
@@ -20,7 +20,9 @@ function Clock({ song }) {
   }, []);
 
   useEffect(() => {
-    requestAnimationFrame(animateClock);
+    setTimeout(() => {
+      requestAnimationFrame(animateClock);
+    }, 250);
 
     return () => {
       if (requestRef.current === null) return;
