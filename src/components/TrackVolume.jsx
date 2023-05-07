@@ -4,9 +4,8 @@ import Range from "./Range";
 
 function TrackVolume({ channel, trackIndex }) {
   const currentTracks = JSON.parse(localStorage.getItem("currentTracks"));
-  const ubu = currentTracks.map((currentTrack) => currentTrack.volume);
-  console.log("ubu", ubu);
-  const [volumes, setVolumes] = useState([...ubu] ?? [-32, -32, -32, -32]);
+  const vols = currentTracks.map((currentTrack) => currentTrack.volume);
+  const [volumes, setVolumes] = useState([...vols] ?? [-32, -32, -32, -32]);
 
   return (
     <>

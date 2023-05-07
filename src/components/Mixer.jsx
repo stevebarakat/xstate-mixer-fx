@@ -105,6 +105,7 @@ export const Mixer = ({ song }) => {
                         delay={
                           delay1.current !== undefined ? delay1.current : null
                         }
+                        channel={busChannels.current[0]}
                         busIndex={0}
                         fxIndex={0}
                       />
@@ -118,6 +119,7 @@ export const Mixer = ({ song }) => {
                         delay={
                           delay2.current !== undefined ? delay2.current : null
                         }
+                        channel={busChannels.current[1]}
                         busIndex={1}
                         fxIndex={1}
                       />

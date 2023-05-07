@@ -1,8 +1,13 @@
 import { MixerMachineContext } from "../../App";
+import { useState } from "react";
 
 export default function Delay({ delay, busIndex, fxIndex }) {
   const [state, send] = MixerMachineContext.useActor();
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
+  const [delaysFeedback, setDelaysFeedback] = useState([
+    [0.5, 0.5],
+    [0.5, 0.5],
+  ]);
 
   console.log("state.context.delaysFeedback", state.context.delaysFeedback);
   return (
@@ -53,16 +58,15 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           min={0}
           max={1}
           step={0.01}
+          value={delaysFeedback[busIndex][fxIndex]}
           onChange={async (e) => {
-            send({
-              type: "CHANGE_DELAYS_FEEDBACK",
-              target: e.target,
-              delay,
-              busIndex,
-              fxIndex,
-            });
+            const value = parseFloat(e.target.value);
+            currentMix.delaysFeedback[busIndex][fxIndex] = value;
+            delaysFeedback[busIndex][fxIndex] = value;
+            delay.feedback.value = value;
+            setDelaysFeedback([...delaysFeedback]);
+            localStorage.setItem("currentMix", JSON.stringify(currentMix));
           }}
-          defaultValue={currentMix.delaysFeedback[busIndex][fxIndex]}
         />
       </div>
     </div>

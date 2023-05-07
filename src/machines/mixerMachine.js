@@ -19,7 +19,7 @@ export const mixerMachine = createMachine(
     initial: "loading",
     context: {
       mainVolume: -32,
-      busVolumes: [-32, -32],
+      busVolume: -32,
       volumes: initialVolumes,
       pans: initialPans,
       solos: initialSolos,
@@ -41,7 +41,7 @@ export const mixerMachine = createMachine(
       FF: { actions: "fastForward" },
       CHANGE_VOLUME: { actions: "changeVolume" },
       CHANGE_MAIN_VOLUME: { actions: "changeMainVolume" },
-      CHANGE_BUS_VOLUMES: { actions: "changeBusVolumes" },
+      CHANGE_BUS_VOLUME: { actions: "changeBusVolume" },
       SET_BUS1_FX1: { actions: "setBus1Fx1" },
       SET_BUS1_FX2: { actions: "setBus1Fx2" },
       SET_BUS2_FX1: { actions: "setBus2Fx1" },
@@ -134,16 +134,12 @@ export const mixerMachine = createMachine(
         return [assign({ mainVolume: parseFloat(target.value) }), volume];
       }),
 
-      changeBusVolumes: pure((context, { target, channel }) => {
-        const busIndex = target.id.at(-1);
-        const value = parseFloat(target.value);
-        const scaled = dBToPercent(scale(value));
+      changeBusVolume: pure((_, { target, channel }) => {
+        const scaled = dBToPercent(scale(parseFloat(target.value)));
         const volume = () => {
           channel.volume.value = scaled;
         };
-        const tempBusVols = context.busVolumes;
-        tempBusVols[busIndex] = value;
-        return [assign({ busVolumes: tempBusVols }), volume];
+        return [assign({ busVolume: parseFloat(target.value) }), volume];
       }),
 
       setBus1Fx1: assign((context, { target }) => {
@@ -162,13 +158,21 @@ export const mixerMachine = createMachine(
         context.bus2fx2 = target.value;
       }),
 
-      changeVolume: pure((context, { target }) => {
+      changeVolume: pure((context, { target, channel }) => {
         const trackIndex = target.id.at(-1);
         const value = target.value;
-
+        const scaled = dBToPercent(scale(parseFloat(value)));
+        const channelVolume = () => {
+          channel.volume.value = scaled;
+        };
         const tempVols = context.volumes;
         tempVols[trackIndex] = parseFloat(value);
-        return [assign({ volumes: tempVols })];
+        currentTracks[trackIndex].volume = value;
+        localStorage.setItem(
+          "currentTracks",
+          JSON.stringify([...currentTracks])
+        );
+        return [assign({ volume: tempVols }), channelVolume];
       }),
 
       changePan: pure((context, { target, channel }) => {
@@ -239,14 +243,12 @@ export const mixerMachine = createMachine(
         delay.delayTime.value = target.value;
       }),
 
-      changeDelaysFeedback: pure(
-        (context, { target, delay, busIndex, fxIndex }) => {
-          const value = parseFloat(target.value);
-          delay.feedback.value = parseFloat(value);
-          currentMix.delaysFeedback[busIndex][fxIndex] = value;
-          localStorage.setItem("currentMix", JSON.stringify(currentMix));
-        }
-      ),
+      changeDelaysFeedback: assign((context, { target, busIndex, fxIndex }) => {
+        const value = parseFloat(target.value);
+        context.delaysFeedback[busIndex][fxIndex] = value;
+        currentMix.delaysFeedback[busIndex][fxIndex] = value;
+        localStorage.setItem("currentMix", JSON.stringify(currentMix));
+      }),
     },
   }
 );
