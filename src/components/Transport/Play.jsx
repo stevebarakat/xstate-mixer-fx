@@ -1,22 +1,20 @@
-import { MixerMachineContext } from "../../App";
+import { context, start, Transport as t } from "tone";
 import Button from "../Button";
 import { play, pause } from "../../assets/icons";
 
 function Play() {
-  const [state, send] = MixerMachineContext.useActor();
-
+  console.log("t.state", t.state);
   return (
     <Button
       onClick={() => {
-        if (!state.matches("playing")) {
-          send("PLAY");
-        }
-        if (state.matches("playing")) {
-          send("PAUSE");
+        if (t.state !== "started") {
+          t.start();
+        } else {
+          t.pause();
         }
       }}
     >
-      {!state.matches("playing") ? play : pause}
+      {t.state !== "started" ? play : pause}
     </Button>
   );
 }

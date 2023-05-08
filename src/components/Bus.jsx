@@ -1,23 +1,18 @@
 import { useState } from "react";
 import { array as fx } from "../utils";
-import { MixerMachineContext } from "../App";
 import Range from "./Range";
 
-function Bus({ busChannel, busIndex }) {
-  const [state, send] = MixerMachineContext.useActor();
-  const currentMix = JSON.parse(localStorage.getItem("currentMix"));
-
+function Bus({ busChannel, busIndex, state, dispatch, isOpen, setIsOpen }) {
   const [busVolumes, setBusVolumes] = useState([-32, -32]);
 
+  console.log("state", state);
   return (
     <div>
       <button
         className="button effect-select"
-        onClick={(e) => {
-          send("TOGGLE");
-        }}
+        onClick={(e) => setIsOpen(!isOpen)}
       >
-        {state.hasTag("active") ? "Close" : "Open"} FX
+        {isOpen ? "Close" : "Open"} FX
       </button>
 
       {fx(2).map((_, i) => {
@@ -26,12 +21,12 @@ function Bus({ busChannel, busIndex }) {
             key={i}
             id={`bus${busIndex}fx${i}`}
             onChange={(e) => {
-              send({
+              dispatch({
                 type: `SET_BUS${busIndex + 1}_FX${i + 1}`,
-                target: e.target,
+                payload: e.target.value,
               });
             }}
-            defaultValue={state.context[`bus${busIndex}fx${i}`]}
+            value={state[`bus${busIndex}fx${i}`]}
           >
             <option value="nofx">{`FX ${i + 1}`}</option>
             <option value={`reverb${busIndex + 1}`}>Reverb</option>
@@ -48,7 +43,7 @@ function Bus({ busChannel, busIndex }) {
           min={-100}
           max={12}
           step={0.1}
-          // value={busVolumes[busIndex]}
+          value={busVolumes[busIndex]}
           onChange={(e) => {
             const value = parseFloat(e.target.value);
             busVolumes[busIndex] = value;

@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { Mixer } from "./components/Mixer";
 import { justDance, roxanne, aDayInTheLife, blueMonday } from "./songs";
-import { createActorContext } from "@xstate/react";
-import { mixerMachine } from "./machines/mixerMachine";
-
-// export const song = roxanne;
-export const MixerMachineContext = createActorContext(mixerMachine);
 
 function App() {
   const [song, setSourceSong] = useState(() =>
@@ -56,9 +51,7 @@ function App() {
 
   return (
     <>
-      <MixerMachineContext.Provider>
-        <Mixer song={song} />
-      </MixerMachineContext.Provider>
+      <Mixer song={song} />
       <select name="songs" id="song-select" onChange={onChange}>
         <option value="">Choose a song:</option>
         <option value="roxanne">The Police - Roxanne</option>

@@ -38,9 +38,6 @@ function ChannelStrip({ track, trackIndex, channel, channels }) {
             if (e.target.checked) {
               channels[id].send("reverb2");
               channels[id].send("delay2");
-            } else {
-              channels[id].disconnect();
-              channels[id].connect(Destination);
             }
           }}
         />

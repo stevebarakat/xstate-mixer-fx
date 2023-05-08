@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState, useReducer, useRef } from "react";
 import { array as fx } from "../utils";
 import { Channel, Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
@@ -7,15 +7,23 @@ import Loader from "./Loader";
 import ChannelStrip from "./ChannelStrip";
 import Reverber from "./Fx/Reverber";
 import Delay from "./Fx/Delay";
-import { MixerMachineContext } from "../App";
 import MainVolume from "./MainVolume";
 import Bus from "./Bus";
 import { Rnd } from "react-rnd";
+import fxReducer from "../state/fxReducer";
+
+const initialState = {
+  bus1fx1: "nofx",
+  bus1fx2: "nofx",
+  bus2fx1: "nofx",
+  bus2fx2: "nofx",
+};
 
 export const Mixer = ({ song }) => {
+  const [state, dispatch] = useReducer(fxReducer, initialState);
   const tracks = song.tracks;
-  const [state, send] = MixerMachineContext.useActor();
-  const [channels] = useChannelStrip({ tracks });
+  const [isOpen, setIsOpen] = useState(false);
+  const [channels, isLoaded] = useChannelStrip({ tracks });
 
   const reverb1 = useRef(new Reverb(3));
   const delay1 = useRef(new FeedbackDelay().toDestination());
@@ -26,7 +34,7 @@ export const Mixer = ({ song }) => {
   useEffect(() => {
     fx(2).forEach((_, i) => {
       fx(2).forEach((_, j) => {
-        switch (state.context[`bus${i + 1}fx${j + 1}`]) {
+        switch (state[`bus${i + 1}fx${j + 1}`]) {
           case "nofx":
             break;
           case "reverb1":
@@ -63,75 +71,68 @@ export const Mixer = ({ song }) => {
     //   busChannels.current.forEach((busChannel) => busChannel.dispose());
     //   busChannels.current = [];
     // };
-  }, [state.context]);
+  }, [state]);
 
-  return state.value === "loading" ? (
+  return !isLoaded ? (
     <Loader song={song} />
   ) : (
     <div className="mixer">
       <div>
         {song.artist} - {song.title}
       </div>
+      {!isOpen && (
+        <Rnd
+          className="fx-panel"
+          default={{
+            x: 0,
+            y: 0,
+            width: 320,
+            height: "auto",
+          }}
+          cancel="input"
+        >
+          <button onClick={() => setIsOpen(!isOpen)}>X</button>
 
-      {(state.context.bus1fx1 !== "nofx" || state.context.bus1fx2 !== "nofx") &&
-        state.hasTag("active") && (
-          <Rnd
-            className="fx-panel"
-            default={{
-              x: 0,
-              y: 0,
-              width: 320,
-              height: "auto",
-            }}
-            cancel="input"
-          >
-            <button
-              onClick={(e) => {
-                send("TOGGLE");
-              }}
-            >
-              X
-            </button>
-
-            {fx(2).map((_, i) => {
-              return fx(2).map((_, j) => {
-                switch (state.context[`bus${i}fx${j}`]) {
-                  case "reverb1":
-                    return <Reverber key={i} reverb={reverb1.current} />;
-                  case "delay1":
-                    return (
-                      <Delay
-                        key={i}
-                        delay={
-                          delay1.current !== undefined ? delay1.current : null
-                        }
-                        channel={busChannels.current[0]}
-                        busIndex={0}
-                        fxIndex={0}
-                      />
-                    );
-                  case "reverb2":
-                    return <Reverber key={i} reverb={reverb2.current} />;
-                  case "delay2":
-                    return (
-                      <Delay
-                        key={i}
-                        delay={
-                          delay2.current !== undefined ? delay2.current : null
-                        }
-                        channel={busChannels.current[1]}
-                        busIndex={1}
-                        fxIndex={1}
-                      />
-                    );
-                  default:
-                    break;
-                }
-                return null;
-              });
-            })}
-          </Rnd>
-        )}
+          {fx(2).map((_, i) => {
+            return fx(2).map((_, j) => {
+              console.log(state[`bus${i}fx${j}`]);
+              switch (state[`bus${i}fx${j}`]) {
+                case "reverb1":
+                  return <Reverber key={i} reverb={reverb1.current} />;
+                case "delay1":
+                  return (
+                    <Delay
+                      key={i}
+                      delay={
+                        delay1.current !== undefined ? delay1.current : null
+                      }
+                      channel={busChannels.current[0]}
+                      busIndex={0}
+                      fxIndex={0}
+                    />
+                  );
+                case "reverb2":
+                  return <Reverber key={i} reverb={reverb2.current} />;
+                case "delay2":
+                  return (
+                    <Delay
+                      key={i}
+                      delay={
+                        delay2.current !== undefined ? delay2.current : null
+                      }
+                      channel={busChannels.current[1]}
+                      busIndex={1}
+                      fxIndex={1}
+                    />
+                  );
+                default:
+                  break;
+              }
+              return null;
+            });
+          })}
+        </Rnd>
+      )}
       <div className="channels">
         <div>
           {tracks.map((track, i) => (
@@ -145,7 +146,15 @@ export const Mixer = ({ song }) => {
           ))}
         </div>
         {busChannels.current.map((busChannel, i) => (
-          <Bus key={i} busChannel={busChannel} busIndex={i} />
+          <Bus
+            key={i}
+            busChannel={busChannel}
+            busIndex={i}
+            state={state}
+            dispatch={dispatch}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+          />
         ))}
         <MainVolume />
       </div>
