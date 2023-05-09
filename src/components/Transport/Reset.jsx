@@ -1,12 +1,14 @@
-import { Transport as t } from "tone";
+import { MixerMachineContext } from "../../App";
 import Button from "../Button";
 import { restart } from "../../assets/icons";
 
 function Reset() {
+  const [, send] = MixerMachineContext.useActor();
+
   return (
     <Button
       onClick={() => {
-        t.stop();
+        send("RESET");
       }}
     >
       {restart}

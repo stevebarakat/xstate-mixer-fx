@@ -1,13 +1,15 @@
-import { Transport as t } from "tone";
+import { MixerMachineContext } from "../../App";
 import Button from "../Button";
 import { rew } from "../../assets/icons";
 
-function Rewind({ song }) {
+function Rewind() {
+  const [, send] = MixerMachineContext.useActor();
+
   return (
     <Button
-      onClick={() =>
-        (t.seconds = t.seconds > 10 + song.start ? t.seconds - 10 : song.start)
-      }
+      onClick={() => {
+        send("REWIND");
+      }}
     >
       {rew}
     </Button>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Mixer } from "./components/Mixer";
 import { justDance, roxanne, aDayInTheLife, blueMonday } from "./songs";
 import { createActorContext } from "@xstate/react";
@@ -7,9 +6,7 @@ import { mixerMachine } from "./machines/mixerMachine";
 export const MixerMachineContext = createActorContext(mixerMachine);
 
 function App() {
-  const [song, setSourceSong] = useState(() =>
-    JSON.parse(localStorage.getItem("song"))
-  );
+  let song = JSON.parse(localStorage.getItem("song"));
 
   function onChange(e) {
     let currentTracks = [];
@@ -20,28 +17,24 @@ function App() {
         localStorage.setItem("currentMix", JSON.stringify(currentMix));
         currentTracks = roxanne.tracks;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        setSourceSong(roxanne);
         window.location.reload();
         break;
       case "aDayInTheLife":
         localStorage.setItem("song", JSON.stringify(aDayInTheLife));
         currentTracks = aDayInTheLife.tracks;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        setSourceSong(aDayInTheLife);
         window.location.reload();
         break;
       case "blueMonday":
         localStorage.setItem("song", JSON.stringify(blueMonday));
         currentTracks = blueMonday.tracks;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        setSourceSong(blueMonday);
         window.location.reload();
         break;
       case "justDance":
         localStorage.setItem("song", JSON.stringify(justDance));
         currentTracks = justDance.tracks;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        setSourceSong(justDance);
         window.location.reload();
         break;
 

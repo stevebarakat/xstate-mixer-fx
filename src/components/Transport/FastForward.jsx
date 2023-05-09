@@ -1,14 +1,15 @@
-import { Transport as t } from "tone";
+import { MixerMachineContext } from "../../App";
 import Button from "../Button";
 import { ff } from "../../assets/icons";
 
-export function FastForward({ song }) {
+export function FastForward() {
+  const [, send] = MixerMachineContext.useActor();
+
   return (
     <Button
-      onClick={() =>
-        (t.seconds =
-          t.seconds < song.end - 10 ? t.seconds + 10 : (t.seconds = song.end))
-      }
+      onClick={() => {
+        send("FF");
+      }}
     >
       {ff}
     </Button>

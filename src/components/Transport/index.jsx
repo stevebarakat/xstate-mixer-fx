@@ -8,9 +8,9 @@ const Transport = ({ song }) => (
   <div className="flex gap12">
     <div className="flex gap4">
       <Reset />
-      <Rewind song={song} />
+      <Rewind />
       <Play />
-      <FF song={song} />
+      <FF />
     </div>
     <Clock song={song} />
   </div>
