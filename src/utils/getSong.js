@@ -8,6 +8,8 @@ export function getSong(defaultSong) {
 
   if (!currentMix) {
     currentMix = {
+      mainVolume: -32,
+      busVolumes: [-32, -32],
       buses: {
         bus1fx1: "nofx",
         bus1fx2: "nofx",
@@ -18,32 +20,32 @@ export function getSong(defaultSong) {
         bus1: { isOpen: false, position: { x: 0, y: 0 } },
         bus2: { isOpen: false, position: { x: 0, y: 0 } },
       },
-      mainVolume: -32,
-      busVolumes: [-32, -32],
-      reverbsMix: [
-        [0.5, 0.5],
-        [0.5, 0.5],
-      ],
-      reverbsPreDelay: [
-        [0.5, 0.5],
-        [0.5, 0.5],
-      ],
-      reverbsDecay: [
-        [0.5, 0.5],
-        [0.5, 0.5],
-      ],
-      delaysMix: [
-        [0.5, 0.5],
-        [0.5, 0.5],
-      ],
-      delaysTime: [
-        [0.5, 0.5],
-        [0.5, 0.5],
-      ],
-      delaysFeedback: [
-        [0.5, 0.5],
-        [0.5, 0.5],
-      ],
+      busFxData: {
+        reverbsMix: [
+          [0.5, 0.5],
+          [0.5, 0.5],
+        ],
+        reverbsPreDelay: [
+          [0.5, 0.5],
+          [0.5, 0.5],
+        ],
+        reverbsDecay: [
+          [0.5, 0.5],
+          [0.5, 0.5],
+        ],
+        delaysMix: [
+          [0.5, 0.5],
+          [0.5, 0.5],
+        ],
+        delaysTime: [
+          [0.5, 0.5],
+          [0.5, 0.5],
+        ],
+        delaysFeedback: [
+          [0.5, 0.5],
+          [0.5, 0.5],
+        ],
+      },
     };
     localStorage.setItem("currentMix", JSON.stringify(currentMix));
   }
