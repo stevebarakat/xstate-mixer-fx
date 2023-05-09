@@ -1,6 +1,6 @@
 import { useEffect, useState, useReducer, useRef } from "react";
 import { array as fx } from "../utils";
-import { Channel, Reverb, FeedbackDelay } from "tone";
+import { Channel, Reverb, FeedbackDelay, disconnect } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
 import Transport from "./Transport";
 import Loader from "./Loader";
@@ -25,7 +25,7 @@ export const Mixer = ({ song }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [channels, isLoaded] = useChannelStrip({ tracks });
 
-  const reverb1 = useRef(new Reverb(3));
+  const reverb1 = useRef(new Reverb(3).toDestination());
   const delay1 = useRef(new FeedbackDelay().toDestination());
   const reverb2 = useRef(new Reverb(3).toDestination());
   const delay2 = useRef(new FeedbackDelay().toDestination());
@@ -35,26 +35,32 @@ export const Mixer = ({ song }) => {
     fx(2).forEach((_, i) => {
       fx(2).forEach((_, j) => {
         switch (state[`bus${i + 1}fx${j + 1}`]) {
-          case "nofx":
+          case "nofx1":
+            busChannels.current[0].disconnect();
+            busChannels.current[0] = new Channel().toDestination();
+            break;
+          case "nofx2":
+            busChannels.current[1].disconnect();
+            busChannels.current[1] = new Channel().toDestination();
             break;
           case "reverb1":
-            // reverb1.current = new Reverb(3).toDestination();
-            busChannels.current[0].connect(reverb1.current);
+            busChannels.current[0].disconnect();
+            busChannels.current[0] = new Channel().connect(reverb1.current);
             busChannels.current[0].receive("reverb1");
             break;
           case "delay1":
-            // delay1.current = new FeedbackDelay().toDestination();
-            busChannels.current[0].connect(delay1.current);
+            busChannels.current[0].disconnect();
+            busChannels.current[0] = new Channel().connect(delay1.current);
             busChannels.current[0].receive("delay1");
             break;
           case "reverb2":
-            // reverb2.current = new Reverb(3).toDestination();
-            busChannels.current[1].connect(reverb2.current);
+            busChannels.current[1].disconnect();
+            busChannels.current[1] = new Channel().connect(reverb2.current);
             busChannels.current[1].receive("reverb2");
             break;
           case "delay2":
-            // delay2.current = new FeedbackDelay().toDestination();
-            busChannels.current[1].connect(delay2.current);
+            busChannels.current[1].disconnect();
+            busChannels.current[1] = new Channel().connect(delay2.current);
             busChannels.current[1].receive("delay2");
             break;
           default:

@@ -28,7 +28,7 @@ function Bus({ busChannel, busIndex, state, dispatch, isOpen, setIsOpen }) {
             }}
             value={state[`bus${busIndex}fx${i}`]}
           >
-            <option value="nofx">{`FX ${i + 1}`}</option>
+            <option value={`nofx${busIndex + 1}`}>{`FX ${i + 1}`}</option>
             <option value={`reverb${busIndex + 1}`}>Reverb</option>
             <option value={`delay${busIndex + 1}`}>Delay</option>
           </select>
