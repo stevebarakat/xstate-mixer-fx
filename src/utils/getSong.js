@@ -8,7 +8,7 @@ export function getSong(defaultSong) {
 
   if (!currentMix) {
     currentMix = {
-      state: {
+      buses: {
         bus1fx1: "nofx",
         bus1fx2: "nofx",
         bus2fx1: "nofx",

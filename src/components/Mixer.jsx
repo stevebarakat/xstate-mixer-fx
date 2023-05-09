@@ -23,8 +23,8 @@ const defaults = {
 export const Mixer = ({ song }) => {
   const { send } = MixerMachineContext.useActorRef();
   const buses = MixerMachineContext.useSelector((state) => {
-    const { bus1fx1, bus1fx2, bus2fx1, bus2fx2 } = state.context;
-    return { bus1fx1, bus1fx2, bus2fx1, bus2fx2 };
+    const { buses } = state.context;
+    return buses;
   }, shallowEqual);
   const isLoading = MixerMachineContext.useSelector(
     (state) => state.value === "loading"
@@ -102,6 +102,7 @@ export const Mixer = ({ song }) => {
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {
+              console.log("HEY!!!", buses);
               switch (buses[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb1":
                   return <Reverber key="reverb1" reverb={fx.current.reverb1} />;

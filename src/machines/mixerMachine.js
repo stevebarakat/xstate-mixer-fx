@@ -49,6 +49,7 @@ export const mixerMachine = createMachine(
       SET_BUS1_FX2: { actions: "setBus1Fx2" },
       SET_BUS2_FX1: { actions: "setBus2Fx1" },
       SET_BUS2_FX2: { actions: "setBus2Fx2" },
+      SET_BUS_FX: { actions: "setBusFx" },
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
@@ -217,6 +218,23 @@ export const mixerMachine = createMachine(
           JSON.stringify([...currentTracks])
         );
         return [assign({ solo: tempSolos }), soloChannel];
+      }),
+
+      setBusFx: assign((context, { target, busIndex, fxIndex }) => {
+        context.buses = {
+          ...context.buses,
+          [`bus${busIndex + 1}fx${fxIndex + 1}`]: target.value,
+        };
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentMix,
+            buses: {
+              ...context.buses,
+              [`bus${busIndex + 1}fx${fxIndex + 1}`]: target.value,
+            },
+          })
+        );
       }),
 
       setBus1Fx1: assign((context, { target }) => {

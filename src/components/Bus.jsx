@@ -17,30 +17,38 @@ function Bus({ busChannels, busIndex }) {
         {state.hasTag("active") ? "Close" : "Open"} FX
       </button>
 
-      {fx(2).map((_, i) => {
+      {fx(2).map((_, fxIndex) => {
         return (
           <select
-            key={i}
-            id={`bus${busIndex}fx${i}`}
+            key={fxIndex}
+            id={`bus${busIndex}fx${fxIndex}`}
+            // onChange={(e) => {
+            //   send({
+            //     type: `SET_BUS${busIndex + 1}_FX${i + 1}`,
+            //     target: e.target,
+            //   });
+            //   localStorage.setItem(
+            //     "currentMix",
+            //     JSON.stringify({
+            //       ...currentMix,
+            //       state: {
+            //         ...state.state,
+            //         [`bus${busIndex + 1}fx${i + 1}`]: e.target.value,
+            //       },
+            //     })
+            //   );
+            // }}
             onChange={(e) => {
               send({
-                type: `SET_BUS${busIndex + 1}_FX${i + 1}`,
+                type: "SET_BUS_FX",
                 target: e.target,
+                busIndex,
+                fxIndex,
               });
-              localStorage.setItem(
-                "currentMix",
-                JSON.stringify({
-                  ...currentMix,
-                  state: {
-                    ...state.state,
-                    [`bus${busIndex + 1}fx${i + 1}`]: e.target.value,
-                  },
-                })
-              );
             }}
-            defaultValue={currentMix[`bus${busIndex + 1}fx${i + 1}`]}
+            defaultValue={currentMix[`bus${busIndex + 1}fx${fxIndex + 1}`]}
           >
-            <option value={`nofx${busIndex + 1}`}>{`FX ${i + 1}`}</option>
+            <option value={`nofx${busIndex + 1}`}>{`FX ${fxIndex + 1}`}</option>
             <option value={`reverb${busIndex + 1}`}>Reverb</option>
             <option value={`delay${busIndex + 1}`}>Delay</option>
           </select>
