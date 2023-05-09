@@ -14,6 +14,10 @@ export function getSong(defaultSong) {
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
+      busData: {
+        bus1: { isOpen: false, position: { x: 0, y: 0 } },
+        bus2: { isOpen: false, position: { x: 0, y: 0 } },
+      },
       mainVolume: -32,
       busVolumes: [-32, -32],
       reverbsMix: [

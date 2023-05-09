@@ -31,6 +31,10 @@ export const mixerMachine = createMachine(
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
+      busData: {
+        bus1: { isOpen: false, position: { x: 0, y: 0 } },
+        bus2: { isOpen: false, position: { x: 0, y: 0 } },
+      },
       reverbsMix: currentMix.reverbsMix,
       reverbsPreDelay: currentMix.reverbsPreDelay,
       reverbsDecay: currentMix.reverbsDecay,
@@ -61,42 +65,12 @@ export const mixerMachine = createMachine(
     states: {
       loading: { on: { LOADED: "stopped" } },
       playing: {
-        initial: "inactive",
         entry: "play",
-        states: {
-          inactive: {
-            tags: "active",
-            on: {
-              TOGGLE: "active",
-            },
-          },
-          active: {
-            tags: "inactive",
-            on: {
-              TOGGLE: "inactive",
-            },
-          },
-        },
         on: {
           PAUSE: { target: "stopped", actions: "pause" },
         },
       },
       stopped: {
-        initial: "inactive",
-        states: {
-          inactive: {
-            tags: "active",
-            on: {
-              TOGGLE: "active",
-            },
-          },
-          active: {
-            tags: "inactive",
-            on: {
-              TOGGLE: "inactive",
-            },
-          },
-        },
         on: {
           PLAY: { target: "playing" },
         },
@@ -229,6 +203,27 @@ export const mixerMachine = createMachine(
             buses: {
               ...context.buses,
               [`bus${busIndex + 1}fx${fxIndex + 1}`]: target.value,
+            },
+          })
+        );
+      }),
+
+      setBusData: assign((context, { checked, busIndex }) => {
+        context.busData = {
+          ...context.busData,
+          [`bus${busIndex + 1}`]: {
+            isOpen: !checked,
+          },
+        };
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentMix,
+            busData: {
+              ...context.busData,
+              [`bus${busIndex + 1}`]: {
+                isOpen: checked,
+              },
             },
           })
         );

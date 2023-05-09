@@ -6,17 +6,24 @@ function Bus({ busChannels, busIndex }) {
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
   const [state, send] = MixerMachineContext.useActor();
 
+  console.log(
+    "state.context.busData.bus1.isOpen",
+    state.context.busData[`bus${busIndex + 1}`].isOpen
+  );
   return (
     <div>
-      <button
+      <input
+        type="checkbox"
         className="button effect-select"
         onClick={(e) => {
-          send("TOGGLE");
+          send({
+            type: "SET_BUS_DATA",
+            checked: !e.target.checked,
+            busIndex,
+          });
         }}
-      >
-        {state.hasTag("active") ? "Close" : "Open"} FX
-      </button>
-
+      />
+      {state.context.busData[`bus${busIndex + 1}`].isOpen ? "Close" : "Open"} FX
       {fx(2).map((_, fxIndex) => {
         return (
           <select
@@ -40,7 +47,6 @@ function Bus({ busChannels, busIndex }) {
           </select>
         );
       })}
-
       <div className="channel">
         <div className="window">{`${state.context.busVolumes[busIndex].toFixed(
           0

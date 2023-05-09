@@ -22,16 +22,15 @@ const defaults = {
 
 export const Mixer = ({ song }) => {
   const { send } = MixerMachineContext.useActorRef();
-  const buses = MixerMachineContext.useSelector((state) => {
-    const { buses } = state.context;
-    return buses;
+  const { buses, busData } = MixerMachineContext.useSelector((state) => {
+    const { buses, busData } = state.context;
+    return { buses, busData };
   }, shallowEqual);
   const isLoading = MixerMachineContext.useSelector(
     (state) => state.value === "loading"
   );
-  const isActive = MixerMachineContext.useSelector((state) =>
-    state.hasTag("active")
-  );
+  const isOpen1 = busData.bus1.isOpen;
+  const isOpen2 = busData.bus2.isOpen;
   const tracks = song.tracks;
   const [channels] = useChannelStrip({ tracks });
 
@@ -90,15 +89,18 @@ export const Mixer = ({ song }) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      {isActive && (
+      {isOpen1 && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
-          <button
+          <input
+            type="checkbox"
             onClick={(e) => {
-              send("TOGGLE");
+              send({
+                type: "SET_BUS_DATA",
+                checked: e.target.checked,
+                busIndex: 0,
+              });
             }}
-          >
-            X
-          </button>
+          />
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {
@@ -123,15 +125,18 @@ export const Mixer = ({ song }) => {
           })}
         </Rnd>
       )}
-      {isActive && (
+      {isOpen2 && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
-          <button
+          <input
+            type="checkbox"
             onClick={(e) => {
-              send("TOGGLE");
+              send({
+                type: "SET_BUS_DATA",
+                checked: e.target.checked,
+                busIndex: 1,
+              });
             }}
-          >
-            X
-          </button>
+          />
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {
