@@ -7,7 +7,10 @@ function Play() {
   return (
     <Button
       onClick={() => {
-        if (t.state !== "started") {
+        if (context.state === "suspended") {
+          start(); // initialize audio context
+          t.start();
+        } else if (t.state !== "started") {
           t.start();
         } else {
           t.pause();

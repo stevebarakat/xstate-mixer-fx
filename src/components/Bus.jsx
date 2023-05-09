@@ -31,8 +31,11 @@ function Bus({ busChannel, busIndex, state, dispatch, isOpen, setIsOpen }) {
               localStorage.setItem(
                 "currentMix",
                 JSON.stringify({
-                  ...state,
-                  [`bus${busIndex + 1}fx${i + 1}`]: e.target.value,
+                  ...currentMix,
+                  state: {
+                    ...state,
+                    [`bus${busIndex + 1}fx${i + 1}`]: e.target.value,
+                  },
                 })
               );
             }}
