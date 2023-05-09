@@ -1,11 +1,16 @@
 import { createMachine, assign } from "xstate";
 import { pure } from "xstate/lib/actions";
-import { start, getContext, Destination, Transport as t } from "tone";
+import {
+  start as initializeAudio,
+  getContext as getAudioContext,
+  Destination,
+  Transport as t,
+} from "tone";
 import { dBToPercent, scale } from "../utils/scale";
 import { getSong } from "../utils/getSong";
 import { roxanne } from "../songs";
 
-const context = getContext();
+const actx = getAudioContext();
 const [song, currentMix, currentTracks] = getSong(roxanne);
 const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
 const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
@@ -19,6 +24,9 @@ export const mixerMachine = createMachine(
     id: "mixer",
     initial: "loading",
     context: {
+      songStart: song.songStart,
+      end: song.end,
+      currentTime: t.seconds,
       mainVolume: currentMix.mainVolume,
       busVolumes: initialBusVolumes,
       volume: initialVolumes,
@@ -61,7 +69,6 @@ export const mixerMachine = createMachine(
       CHANGE_DELAYS_DELAY_TIME: { actions: "changeDelaysTime" },
       CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
     },
-
     states: {
       loading: { on: { LOADED: "stopped" } },
       playing: {
@@ -82,24 +89,21 @@ export const mixerMachine = createMachine(
 
   {
     actions: {
-      play: () => {
-        if (context.state === "suspended") {
-          start(); // initialize audio context
-          t.start();
-        } else {
-          t.start();
-        }
-      },
+      reset: () => t.stop(),
       pause: () => t.pause(),
-      reset: () => {
-        t.stop();
-        t.seconds = song.start ?? 0;
-      },
-      fastForward: () =>
-        (t.seconds =
-          t.seconds < song.end - 10 ? t.seconds + 10 : (t.seconds = song.end)),
-      rewind: () =>
-        (t.seconds = t.seconds > 10 + song.start ? t.seconds - 10 : song.start),
+      play: () => (actx.state === "suspended" ? initializeAudio : t.start()),
+
+      fastForward: pure((context) => {
+        t.seconds =
+          context.currentTime < context.end - 10 ? t.seconds + 10 : context.end;
+      }),
+
+      rewind: pure((context) => {
+        t.seconds =
+          t.seconds > 10 + context.songStart
+            ? t.seconds - 10
+            : context.songStart;
+      }),
 
       changeMainVolume: pure((_, { target }) => {
         const value = parseFloat(target.value);
