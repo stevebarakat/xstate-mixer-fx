@@ -46,6 +46,7 @@ export const mixerMachine = createMachine(
       CHANGE_MAIN_VOLUME: { actions: "changeMainVolume" },
       CHANGE_BUS_VOLUMES: { actions: "changeBusVolumes" },
       SET_BUS_FX: { actions: "setBusFx" },
+      SET_BUS_DATA: { actions: "setBusData" },
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
@@ -231,22 +232,6 @@ export const mixerMachine = createMachine(
             },
           })
         );
-      }),
-
-      setBus1Fx1: assign((context, { target }) => {
-        context.bus1fx1 = target.value;
-      }),
-
-      setBus1Fx2: assign((context, { target }) => {
-        context.bus1fx2 = target.value;
-      }),
-
-      setBus2Fx1: assign((context, { target }) => {
-        context.bus2fx1 = target.value;
-      }),
-
-      setBus2Fx2: assign((context, { target }) => {
-        context.bus2fx2 = target.value;
       }),
 
       changeReverbsMix: assign((context, { target, reverb }) => {
