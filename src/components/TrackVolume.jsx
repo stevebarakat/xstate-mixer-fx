@@ -1,35 +1,26 @@
-import { useState } from "react";
-import { dBToPercent, scale } from "../utils/scale";
+import { MixerMachineContext } from "../App";
 import Range from "./Range";
 
 function TrackVolume({ channel, trackIndex }) {
-  const currentTracks = JSON.parse(localStorage.getItem("currentTracks"));
-  const vols = currentTracks.map((currentTrack) => currentTrack.volume);
-  const [volumes, setVolumes] = useState([...vols] ?? [-32, -32, -32, -32]);
+  const [state, send] = MixerMachineContext.useActor();
+  const volume = parseFloat(state.context.volumes[trackIndex]);
 
   return (
     <>
-      <div className="window">{`${volumes[trackIndex].toFixed(0)} dB`}</div>
+      <div className="window">{`${volume.toFixed(0)} dB`}</div>
       <Range
         id={`trackVol${trackIndex}`}
         className="range-y"
         min={-100}
         max={12}
         step={0.1}
-        value={volumes[trackIndex]}
+        value={volume}
         onChange={(e) => {
-          const trackIndex = e.target.id.at(-1);
-          const value = parseFloat(e.target.value);
-          const scaled = dBToPercent(scale(value));
-          channel.volume.value = scaled;
-          const tempVols = volumes;
-          tempVols[trackIndex] = value;
-          setVolumes([...tempVols]);
-          currentTracks[trackIndex].volume = value;
-          localStorage.setItem(
-            "currentTracks",
-            JSON.stringify([...currentTracks])
-          );
+          send({
+            type: "CHANGE_VOLUME",
+            target: e.target,
+            channel,
+          });
         }}
       />
     </>
