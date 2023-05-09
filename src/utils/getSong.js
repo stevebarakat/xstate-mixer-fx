@@ -14,6 +14,8 @@ export function getSong(defaultSong) {
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
+      mainVolume: -32,
+      busVolumes: [-32, -32],
       reverbsMix: [
         [0.5, 0.5],
         [0.5, 0.5],

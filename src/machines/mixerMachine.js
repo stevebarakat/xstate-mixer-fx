@@ -11,6 +11,7 @@ const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
 const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
 const initialMutes = currentTracks.map((currentTrack) => currentTrack.mute);
 const initialSolos = currentTracks.map((currentTrack) => currentTrack.solo);
+const initialBusVolumes = currentMix.busVolumes.map((volume) => volume);
 
 export const mixerMachine = createMachine(
   {
@@ -19,7 +20,7 @@ export const mixerMachine = createMachine(
     initial: "loading",
     context: {
       mainVolume: -32,
-      busVolumes: [-32, -32],
+      busVolumes: initialBusVolumes,
       volume: initialVolumes,
       pan: initialPans,
       solo: initialSolos,
@@ -61,18 +62,6 @@ export const mixerMachine = createMachine(
 
     states: {
       loading: { on: { LOADED: "stopped" } },
-      // always: {
-      //   cond: () => {
-      //     if (t.seconds < song.start) {
-      //       t.seconds = song.start;
-      //     }
-      //     if (t.seconds > song.end) {
-      //       t.stop();
-      //       t.seconds = song.start;
-      //     }
-      //   },
-      //   target: "stopped",
-      // },
       playing: {
         initial: "inactive",
         entry: "play",
@@ -157,23 +146,9 @@ export const mixerMachine = createMachine(
         };
         const tempBusVols = context.busVolumes;
         tempBusVols[busIndex] = value;
+        currentMix.busVolumes[busIndex] = value;
+        localStorage.setItem("currentMix", JSON.stringify(currentMix));
         return [assign({ busVolumes: tempBusVols }), volume];
-      }),
-
-      setBus1Fx1: assign((context, { target }) => {
-        context.bus1fx1 = target.value;
-      }),
-
-      setBus1Fx2: assign((context, { target }) => {
-        context.bus1fx2 = target.value;
-      }),
-
-      setBus2Fx1: assign((context, { target }) => {
-        context.bus2fx1 = target.value;
-      }),
-
-      setBus2Fx2: assign((context, { target }) => {
-        context.bus2fx2 = target.value;
       }),
 
       changeVolume: pure((context, { target, channel }) => {
@@ -239,6 +214,22 @@ export const mixerMachine = createMachine(
           JSON.stringify([...currentTracks])
         );
         return [assign({ solo: tempSolos }), soloChannel];
+      }),
+
+      setBus1Fx1: assign((context, { target }) => {
+        context.bus1fx1 = target.value;
+      }),
+
+      setBus1Fx2: assign((context, { target }) => {
+        context.bus1fx2 = target.value;
+      }),
+
+      setBus2Fx1: assign((context, { target }) => {
+        context.bus2fx1 = target.value;
+      }),
+
+      setBus2Fx2: assign((context, { target }) => {
+        context.bus2fx2 = target.value;
       }),
 
       changeReverbsMix: assign((context, { target, reverb }) => {
