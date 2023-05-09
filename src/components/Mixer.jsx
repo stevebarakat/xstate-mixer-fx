@@ -68,15 +68,6 @@ export const Mixer = ({ song }) => {
         }
       });
     });
-
-    // return () => {
-    //   reverb1.current?.dispose();
-    //   delay1.current?.dispose();
-    //   reverb2.current?.dispose();
-    //   delay2.current?.dispose();
-    //   busChannels.current.forEach((busChannel) => busChannel.dispose());
-    //   busChannels.current = [];
-    // };
   }, [state]);
 
   return !isLoaded ? (
@@ -101,8 +92,8 @@ export const Mixer = ({ song }) => {
 
           {fx(2).map((_, i) => {
             return fx(2).map((_, j) => {
-              console.log(state[`bus${i}fx${j}`]);
-              switch (state[`bus${i}fx${j}`]) {
+              console.log("switch", state[`bus${i + 1}fx${j + 1}`]);
+              switch (state[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb1":
                   return <Reverber key={i} reverb={reverb1.current} />;
                 case "delay1":
