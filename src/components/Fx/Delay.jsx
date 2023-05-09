@@ -1,13 +1,8 @@
 import { MixerMachineContext } from "../../App";
 
 export default function Delay({ delay, busIndex, fxIndex }) {
-  const currentMix = JSON.parse(localStorage.getItem("currentMix"));
-  const [state, send] = MixerMachineContext.useActor();
+  const [, send] = MixerMachineContext.useActor();
 
-  console.log(
-    "state.context.busFxData.delaysMix[busIndex][fxIndex]",
-    state.context.busFxData
-  );
   return (
     <div>
       <h3>Delay</h3>
