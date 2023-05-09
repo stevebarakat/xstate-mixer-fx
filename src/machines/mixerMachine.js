@@ -19,7 +19,7 @@ export const mixerMachine = createMachine(
     id: "mixer",
     initial: "loading",
     context: {
-      mainVolume: -32,
+      mainVolume: currentMix.mainVolume,
       busVolumes: initialBusVolumes,
       volume: initialVolumes,
       pan: initialPans,
@@ -130,11 +130,14 @@ export const mixerMachine = createMachine(
         (t.seconds = t.seconds > 10 + song.start ? t.seconds - 10 : song.start),
 
       changeMainVolume: pure((_, { target }) => {
-        const scaled = dBToPercent(scale(parseFloat(target.value)));
+        const value = parseFloat(target.value);
+        const scaled = dBToPercent(scale(value));
         const volume = () => {
           Destination.volume.value = scaled;
         };
-        return [assign({ mainVolume: parseFloat(target.value) }), volume];
+        currentMix.mainVolume = value;
+        localStorage.setItem("currentMix", JSON.stringify(currentMix));
+        return [assign({ mainVolume: value }), volume];
       }),
 
       changeBusVolumes: pure((context, { target, channel }) => {
