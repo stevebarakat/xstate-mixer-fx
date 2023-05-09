@@ -1,18 +1,18 @@
 import { MixerMachineContext } from "../../App";
-import Button from "../Button";
+import TransportButton from "../Buttons/TransportButton";
 import { rew } from "../../assets/icons";
 
 function Rewind() {
   const [, send] = MixerMachineContext.useActor();
 
   return (
-    <Button
+    <TransportButton
       onClick={() => {
         send("REWIND");
       }}
     >
       {rew}
-    </Button>
+    </TransportButton>
   );
 }
 

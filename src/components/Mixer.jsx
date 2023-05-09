@@ -5,6 +5,7 @@ import useChannelStrip from "../hooks/useChannelStrip";
 import Transport from "./Transport";
 import Loader from "./Loader";
 import ChannelStrip from "./ChannelStrip";
+import CloseButton from "./Buttons/CloseButton";
 import Reverber from "./Fx/Reverber";
 import Delay from "./Fx/Delay";
 import MainVolume from "./MainVolume";
@@ -91,16 +92,17 @@ export const Mixer = ({ song }) => {
       </div>
       {isOpen1 && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
-          <input
-            type="checkbox"
+          <CloseButton
+            id="bus-panel-1"
             onClick={(e) => {
               send({
                 type: "SET_BUS_DATA",
-                checked: e.target.checked,
                 busIndex: 0,
               });
             }}
-          />
+          >
+            X
+          </CloseButton>
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {
@@ -127,16 +129,17 @@ export const Mixer = ({ song }) => {
       )}
       {isOpen2 && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
-          <input
-            type="checkbox"
+          <CloseButton
+            id="bus-panel-1"
             onClick={(e) => {
               send({
                 type: "SET_BUS_DATA",
-                checked: e.target.checked,
                 busIndex: 1,
               });
             }}
-          />
+          >
+            X
+          </CloseButton>
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {

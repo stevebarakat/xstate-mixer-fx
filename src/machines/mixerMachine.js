@@ -208,11 +208,11 @@ export const mixerMachine = createMachine(
         );
       }),
 
-      setBusData: assign((context, { checked, busIndex }) => {
+      setBusData: assign((context, { busIndex }) => {
         context.busData = {
           ...context.busData,
           [`bus${busIndex + 1}`]: {
-            isOpen: !checked,
+            isOpen: !context.busData[`bus${busIndex + 1}`].isOpen,
           },
         };
         localStorage.setItem(
@@ -222,7 +222,7 @@ export const mixerMachine = createMachine(
             busData: {
               ...context.busData,
               [`bus${busIndex + 1}`]: {
-                isOpen: checked,
+                isOpen: !context.busData[`bus${busIndex + 1}`].isOpen,
               },
             },
           })

@@ -1,5 +1,6 @@
 import { MixerMachineContext } from "../App";
 import { array as fx } from "../utils";
+import ChannelButton from "./Buttons/ChannelButton";
 import Range from "./Range";
 
 function Bus({ busChannels, busIndex }) {
@@ -12,18 +13,19 @@ function Bus({ busChannels, busIndex }) {
   );
   return (
     <div>
-      <input
-        type="checkbox"
-        className="button effect-select"
+      <ChannelButton
+        id={`bus-panel-${busIndex}`}
         onClick={(e) => {
           send({
             type: "SET_BUS_DATA",
-            checked: !e.target.checked,
             busIndex,
           });
         }}
-      />
-      {state.context.busData[`bus${busIndex + 1}`].isOpen ? "Close" : "Open"} FX
+      >
+        {state.context.busData[`bus${busIndex + 1}`].isOpen ? "Close" : "Open"}
+        FX
+      </ChannelButton>
+
       {fx(2).map((_, fxIndex) => {
         return (
           <select
