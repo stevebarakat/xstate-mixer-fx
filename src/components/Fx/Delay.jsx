@@ -6,7 +6,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
   return (
     <div>
       <h3>Delay</h3>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div className="flex-y">
         <label htmlFor="mix">Mix:</label>
         <input
           type="range"
@@ -27,7 +27,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           }}
         />
       </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div className="flex-y">
         <label htmlFor="delay-time">Delay Time:</label>
         <input
           type="range"
@@ -48,7 +48,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           }}
         />
       </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div className="flex-y">
         <label htmlFor="feedback">Feedback:</label>
         <input
           type="range"

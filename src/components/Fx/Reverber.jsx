@@ -6,7 +6,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }) {
   return (
     <div>
       <h3>Reverb</h3>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div className="flex-y">
         <label htmlFor="mix">Mix:</label>
         <input
           type="range"
@@ -26,7 +26,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }) {
           }}
         />
       </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div className="flex-y">
         <label htmlFor="pre-delay">Pre Delay:</label>
         <input
           type="range"
@@ -46,7 +46,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }) {
           }}
         />
       </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div className="flex-y">
         <label htmlFor="decay">Decay:</label>
         <input
           type="range"
