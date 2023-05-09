@@ -22,22 +22,6 @@ function Bus({ busChannels, busIndex }) {
           <select
             key={fxIndex}
             id={`bus${busIndex}fx${fxIndex}`}
-            // onChange={(e) => {
-            //   send({
-            //     type: `SET_BUS${busIndex + 1}_FX${i + 1}`,
-            //     target: e.target,
-            //   });
-            //   localStorage.setItem(
-            //     "currentMix",
-            //     JSON.stringify({
-            //       ...currentMix,
-            //       state: {
-            //         ...state.state,
-            //         [`bus${busIndex + 1}fx${i + 1}`]: e.target.value,
-            //       },
-            //     })
-            //   );
-            // }}
             onChange={(e) => {
               send({
                 type: "SET_BUS_FX",
@@ -46,7 +30,9 @@ function Bus({ busChannels, busIndex }) {
                 fxIndex,
               });
             }}
-            defaultValue={currentMix[`bus${busIndex + 1}fx${fxIndex + 1}`]}
+            defaultValue={
+              currentMix.buses[`bus${busIndex + 1}fx${fxIndex + 1}`]
+            }
           >
             <option value={`nofx${busIndex + 1}`}>{`FX ${fxIndex + 1}`}</option>
             <option value={`reverb${busIndex + 1}`}>Reverb</option>
@@ -67,10 +53,6 @@ function Bus({ busChannels, busIndex }) {
           step={0.1}
           value={state.context.busVolumes[busIndex]}
           onChange={(e) => {
-            // const value = parseFloat(e.target.value);
-            // busVolumes[busIndex] = value;
-            // setBusVolumes([...busVolumes]);
-            // busChannel.volume.value = value;
             send({
               type: "CHANGE_BUS_VOLUMES",
               target: e.target,

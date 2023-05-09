@@ -102,7 +102,6 @@ export const Mixer = ({ song }) => {
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {
-              console.log("HEY!!!", buses);
               switch (buses[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb1":
                   return <Reverber key="reverb1" reverb={fx.current.reverb1} />;
