@@ -1,4 +1,4 @@
-import { useEffect, useState, useReducer, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { array as fx } from "../utils";
 import { Channel, Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
@@ -10,20 +10,25 @@ import Delay from "./Fx/Delay";
 import MainVolume from "./MainVolume";
 import Bus from "./Bus";
 import { Rnd } from "react-rnd";
-import fxReducer from "../state/fxReducer";
-
-const initialState = {
-  bus1fx1: "nofx",
-  bus1fx2: "nofx",
-  bus2fx1: "nofx",
-  bus2fx2: "nofx",
-};
+import { MixerMachineContext } from "../App";
+import { shallowEqual } from "@xstate/react";
 
 export const Mixer = ({ song }) => {
-  const [state, dispatch] = useReducer(fxReducer, initialState);
+  // const [state, dispatch] = useReducer(fxReducer, initialState);
+  const { send } = MixerMachineContext.useActorRef();
+  const state = MixerMachineContext.useSelector((state) => {
+    const { bus1fx1, bus1fx2, bus2fx1, bus2fx2 } = state.context;
+    return { bus1fx1, bus1fx2, bus2fx1, bus2fx2 };
+  }, shallowEqual);
+  const isLoading = MixerMachineContext.useSelector(
+    (state) => state.value === "loading"
+  );
+  const isActive = MixerMachineContext.useSelector((state) =>
+    state.hasTag("active")
+  );
   const tracks = song.tracks;
   const [isOpen, setIsOpen] = useState(false);
-  const [channels, isLoaded] = useChannelStrip({ tracks });
+  const [channels] = useChannelStrip({ tracks });
 
   const reverb1 = useRef(new Reverb(3).toDestination());
   const delay1 = useRef(new FeedbackDelay().toDestination());
@@ -49,7 +54,7 @@ export const Mixer = ({ song }) => {
             busChannels.current[0].receive("reverb1");
             break;
           case "delay1":
-            busChannels.current[0].disconnect();
+            // busChannels.current[0].disconnect();
             busChannels.current[0] = new Channel().connect(delay1.current);
             busChannels.current[0].receive("delay1");
             break;
@@ -70,7 +75,7 @@ export const Mixer = ({ song }) => {
     });
   }, [state]);
 
-  return !isLoaded ? (
+  return isLoading ? (
     <Loader song={song} />
   ) : (
     <div className="mixer">
@@ -88,11 +93,16 @@ export const Mixer = ({ song }) => {
           }}
           cancel="input"
         >
-          <button onClick={() => setIsOpen(!isOpen)}>X</button>
+          <button
+            onClick={(e) => {
+              send("TOGGLE");
+            }}
+          >
+            X
+          </button>
 
           {fx(2).map((_, i) => {
             return fx(2).map((_, j) => {
-              console.log("switch", state[`bus${i + 1}fx${j + 1}`]);
               switch (state[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb1":
                   return <Reverber key="reverb1" reverb={reverb1.current} />;
@@ -127,11 +137,16 @@ export const Mixer = ({ song }) => {
           }}
           cancel="input"
         >
-          <button onClick={() => setIsOpen(!isOpen)}>X</button>
+          <button
+            onClick={(e) => {
+              send("TOGGLE");
+            }}
+          >
+            X
+          </button>
 
           {fx(2).map((_, i) => {
             return fx(2).map((_, j) => {
-              console.log("switch", state[`bus${i + 1}fx${j + 1}`]);
               switch (state[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb2":
                   return <Reverber key="reverb2" reverb={reverb2.current} />;
@@ -170,10 +185,8 @@ export const Mixer = ({ song }) => {
         {busChannels.current.map((busChannel, i) => (
           <Bus
             key={i}
-            busChannel={busChannel}
+            busChannels={busChannels}
             busIndex={i}
-            state={state}
-            dispatch={dispatch}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
           />

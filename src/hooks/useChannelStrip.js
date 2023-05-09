@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { loaded, Channel, Player, Transport as t, Destination } from "tone";
+import { useEffect, useRef } from "react";
+import { Channel, Player, Transport as t, Destination } from "tone";
 
 function useChannelStrip({ tracks }) {
   const channels = useRef([]);
   const players = useRef([]);
-
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     for (let i = 0; i < tracks.length; i++) {
@@ -35,11 +33,7 @@ function useChannelStrip({ tracks }) {
     };
   }, [tracks]);
 
-  useEffect(() => {
-    loaded().then(() => setIsLoaded(true));
-  }, [setIsLoaded]);
-
-  return [channels, isLoaded];
+  return [channels];
 }
 
 export default useChannelStrip;
