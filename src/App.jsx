@@ -52,7 +52,7 @@ function App() {
 
   return (
     <>
-      <MixerMachineContext.Provider value={song}>
+      <MixerMachineContext.Provider>
         <Mixer song={song} />
       </MixerMachineContext.Provider>
       <select name="songs" id="song-select" onChange={onChange}>
