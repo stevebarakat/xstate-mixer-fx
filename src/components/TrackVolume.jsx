@@ -3,7 +3,7 @@ import Range from "./Range";
 
 function TrackVolume({ channel, trackIndex }) {
   const [state, send] = MixerMachineContext.useActor();
-  const volume = parseFloat(state.context.volumes[trackIndex]);
+  const volume = parseFloat(state.context.volume[trackIndex]);
 
   return (
     <>

@@ -36,6 +36,8 @@ export const Mixer = ({ song }) => {
   const delay2 = useRef(new FeedbackDelay().toDestination());
   const busChannels = useRef([new Channel(), new Channel()]);
 
+  console.log("state.context from Mixer", state.context);
+
   useEffect(() => {
     fx(2).forEach((_, i) => {
       fx(2).forEach((_, j) => {

@@ -3,7 +3,7 @@ import Range from "./Range";
 
 function Pan({ trackIndex, channel }) {
   const [state, send] = MixerMachineContext.useActor();
-  const pan = parseFloat(state.context.pans[trackIndex]);
+  const pan = parseFloat(state.context.pan[trackIndex]);
 
   return (
     <>

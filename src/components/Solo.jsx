@@ -2,7 +2,7 @@ import { MixerMachineContext } from "../App";
 
 function Solo({ trackIndex, channel }) {
   const [state, send] = MixerMachineContext.useActor();
-  const solo = state.context.solos[trackIndex];
+  const solo = state.context.solo[trackIndex];
 
   return (
     <>

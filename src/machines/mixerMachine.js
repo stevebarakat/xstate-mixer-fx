@@ -20,10 +20,10 @@ export const mixerMachine = createMachine(
     context: {
       mainVolume: -32,
       busVolumes: [-32, -32],
-      volumes: initialVolumes,
-      pans: initialPans,
-      solos: initialSolos,
-      mutes: initialMutes,
+      volume: initialVolumes,
+      pan: initialPans,
+      solo: initialSolos,
+      mute: initialMutes,
       bus1fx1: "nofx",
       bus1fx2: "nofx",
       bus2fx1: "nofx",
@@ -175,7 +175,7 @@ export const mixerMachine = createMachine(
         const channelVolume = () => {
           channel.volume.value = scaled;
         };
-        const tempVols = context.volumes;
+        const tempVols = context.volume;
         tempVols[trackIndex] = parseFloat(value);
         currentTracks[trackIndex].volume = value;
         localStorage.setItem(
@@ -191,7 +191,7 @@ export const mixerMachine = createMachine(
         const channelPan = () => {
           channel.pan.value = value;
         };
-        const tempPans = context.pans;
+        const tempPans = context.pan;
         tempPans[trackIndex] = value;
         currentTracks[trackIndex].pan = value;
         localStorage.setItem(
@@ -207,7 +207,7 @@ export const mixerMachine = createMachine(
         const muteChannel = () => {
           channel.mute = checked;
         };
-        const tempMutes = context.mutes;
+        const tempMutes = context.mute;
         tempMutes[trackIndex] = checked;
         currentTracks[trackIndex].mute = target.checked;
         localStorage.setItem(
@@ -223,7 +223,7 @@ export const mixerMachine = createMachine(
         const soloChannel = () => {
           channel.solo = checked;
         };
-        const tempSolos = context.solos;
+        const tempSolos = context.solo;
         tempSolos[trackIndex] = checked;
         currentTracks[trackIndex].solo = target.checked;
         localStorage.setItem(
@@ -256,9 +256,13 @@ export const mixerMachine = createMachine(
       changeDelaysFeedback: pure(
         (context, { target, delay, busIndex, fxIndex }) => {
           const value = parseFloat(target.value);
-          delay.feedback.value = parseFloat(value);
           currentMix.delaysFeedback[busIndex][fxIndex] = value;
+          const tempDelaysFeedback = context.delaysFeedback;
+          tempDelaysFeedback[busIndex][fxIndex] = value;
+          delay.feedback.value = value;
+          // setDelaysFeedback([...delaysFeedback]);
           localStorage.setItem("currentMix", JSON.stringify(currentMix));
+          return [assign({ delaysFeedback: tempDelaysFeedback })];
         }
       ),
     },
