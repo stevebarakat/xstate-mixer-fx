@@ -12,6 +12,12 @@ export function getSong(defaultSong) {
   if (!currentMix) {
     currentMix = {
       songSlug: "roxanne",
+      state: {
+        bus1fx1: "nofx",
+        bus1fx2: "nofx",
+        bus2fx1: "nofx",
+        bus2fx2: "nofx",
+      },
       reverbsMix: [
         [0.5, 0.5],
         [0.5, 0.5],

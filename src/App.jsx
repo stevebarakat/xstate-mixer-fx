@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Mixer } from "./components/Mixer";
 import { justDance, roxanne, aDayInTheLife, blueMonday } from "./songs";
+import { getSong } from "./utils/getSong";
+const [song] = getSong(roxanne);
 
 function App() {
-  const [song, setSourceSong] = useState(() =>
-    JSON.parse(localStorage.getItem("song"))
+  const [sourceSong, setSourceSong] = useState(
+    () => JSON.parse(localStorage.getItem("song")) || song
   );
 
   function onChange(e) {
@@ -51,7 +53,7 @@ function App() {
 
   return (
     <>
-      <Mixer song={song} />
+      <Mixer song={sourceSong} />
       <select name="songs" id="song-select" onChange={onChange}>
         <option value="">Choose a song:</option>
         <option value="roxanne">The Police - Roxanne</option>

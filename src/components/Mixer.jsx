@@ -1,6 +1,6 @@
 import { useEffect, useState, useReducer, useRef } from "react";
 import { array as fx } from "../utils";
-import { Channel, Reverb, FeedbackDelay, disconnect } from "tone";
+import { Channel, Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
 import Transport from "./Transport";
 import Loader from "./Loader";

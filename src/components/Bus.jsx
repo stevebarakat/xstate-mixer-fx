@@ -5,6 +5,10 @@ import Range from "./Range";
 function Bus({ busChannel, busIndex, state, dispatch, isOpen, setIsOpen }) {
   const [busVolumes, setBusVolumes] = useState([-32, -32]);
 
+  const currentMix = JSON.parse(localStorage.getItem("currentMix"));
+
+  console.log("currentMix", currentMix);
+
   console.log("state", state);
   return (
     <div>
@@ -26,7 +30,7 @@ function Bus({ busChannel, busIndex, state, dispatch, isOpen, setIsOpen }) {
                 payload: e.target.value,
               });
             }}
-            value={state[`bus${busIndex}fx${i}`]}
+            defaultValue={state[`bus${busIndex + 1}fx${i + 1}`]}
           >
             <option value={`nofx${busIndex + 1}`}>{`FX ${i + 1}`}</option>
             <option value={`reverb${busIndex + 1}`}>Reverb</option>
