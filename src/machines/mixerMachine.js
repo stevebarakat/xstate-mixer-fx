@@ -3,7 +3,7 @@ import { pure } from "xstate/lib/actions";
 import { start, getContext, Destination, Transport as t } from "tone";
 import { dBToPercent, scale } from "../utils/scale";
 import { getSong } from "../utils/getSong";
-import { blueMonday, roxanne } from "../songs";
+import { roxanne } from "../songs";
 
 const context = getContext();
 const [song, currentMix, currentTracks] = getSong(roxanne);
@@ -24,7 +24,7 @@ export const mixerMachine = createMachine(
       pan: initialPans,
       solo: initialSolos,
       mute: initialMutes,
-      activeBuses: {
+      buses: {
         bus1fx1: "nofx",
         bus1fx2: "nofx",
         bus2fx1: "nofx",
@@ -61,6 +61,18 @@ export const mixerMachine = createMachine(
 
     states: {
       loading: { on: { LOADED: "stopped" } },
+      // always: {
+      //   cond: () => {
+      //     if (t.seconds < song.start) {
+      //       t.seconds = song.start;
+      //     }
+      //     if (t.seconds > song.end) {
+      //       t.stop();
+      //       t.seconds = song.start;
+      //     }
+      //   },
+      //   target: "stopped",
+      // },
       playing: {
         initial: "inactive",
         entry: "play",
@@ -252,11 +264,10 @@ export const mixerMachine = createMachine(
       changeDelaysFeedback: pure(
         (context, { target, delay, busIndex, fxIndex }) => {
           const value = parseFloat(target.value);
-          currentMix.delaysFeedback[busIndex][fxIndex] = value;
+          delay.feedback.value = value;
           const tempDelaysFeedback = context.delaysFeedback;
           tempDelaysFeedback[busIndex][fxIndex] = value;
-          delay.feedback.value = value;
-          // setDelaysFeedback([...delaysFeedback]);
+          currentMix.delaysFeedback[busIndex][fxIndex] = value;
           localStorage.setItem("currentMix", JSON.stringify(currentMix));
           return [assign({ delaysFeedback: tempDelaysFeedback })];
         }

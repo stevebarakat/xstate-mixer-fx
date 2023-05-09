@@ -22,7 +22,7 @@ const defaults = {
 
 export const Mixer = ({ song }) => {
   const { send } = MixerMachineContext.useActorRef();
-  const activeBuses = MixerMachineContext.useSelector((state) => {
+  const buses = MixerMachineContext.useSelector((state) => {
     const { bus1fx1, bus1fx2, bus2fx1, bus2fx2 } = state.context;
     return { bus1fx1, bus1fx2, bus2fx1, bus2fx2 };
   }, shallowEqual);
@@ -47,7 +47,7 @@ export const Mixer = ({ song }) => {
   useEffect(() => {
     array(2).forEach((_, i) => {
       array(2).forEach((_, j) => {
-        switch (activeBuses[`bus${i + 1}fx${j + 1}`]) {
+        switch (buses[`bus${i + 1}fx${j + 1}`]) {
           case "nofx1":
             busChannels.current[0].disconnect();
             busChannels.current[0] = new Channel();
@@ -81,7 +81,7 @@ export const Mixer = ({ song }) => {
         }
       });
     });
-  }, [activeBuses]);
+  }, [buses]);
 
   return isLoading ? (
     <Loader song={song} />
@@ -102,7 +102,7 @@ export const Mixer = ({ song }) => {
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {
-              switch (activeBuses[`bus${i + 1}fx${j + 1}`]) {
+              switch (buses[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb1":
                   return <Reverber key="reverb1" reverb={fx.current.reverb1} />;
                 case "delay1":
@@ -135,7 +135,7 @@ export const Mixer = ({ song }) => {
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {
-              switch (activeBuses[`bus${i + 1}fx${j + 1}`]) {
+              switch (buses[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb2":
                   return <Reverber key="reverb2" reverb={fx.current.reverb2} />;
                 case "delay2":

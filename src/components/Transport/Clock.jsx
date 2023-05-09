@@ -6,7 +6,7 @@ function Clock({ song }) {
   const requestRef = useRef(null);
   const [clock, setClock] = useState(formatMilliseconds(0));
 
-  // make sure song stops at end
+  // make sure song starts at begining and stops at end
   if (song.end !== null && song.start !== null) {
     if (t.seconds < song.start) {
       t.seconds = song.start;
