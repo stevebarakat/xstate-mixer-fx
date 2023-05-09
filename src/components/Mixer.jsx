@@ -95,11 +95,11 @@ export const Mixer = ({ song }) => {
               console.log("switch", state[`bus${i + 1}fx${j + 1}`]);
               switch (state[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb1":
-                  return <Reverber key={i} reverb={reverb1.current} />;
+                  return <Reverber key="reverb1" reverb={reverb1.current} />;
                 case "delay1":
                   return (
                     <Delay
-                      key={i}
+                      key={`bus${i}delay${j}`}
                       delay={
                         delay1.current !== undefined ? delay1.current : null
                       }
@@ -108,12 +108,37 @@ export const Mixer = ({ song }) => {
                       fxIndex={0}
                     />
                   );
+                default:
+                  break;
+              }
+              return null;
+            });
+          })}
+        </Rnd>
+      )}
+      {!isOpen && (
+        <Rnd
+          className="fx-panel"
+          default={{
+            x: 0,
+            y: 0,
+            width: 320,
+            height: "auto",
+          }}
+          cancel="input"
+        >
+          <button onClick={() => setIsOpen(!isOpen)}>X</button>
+
+          {fx(2).map((_, i) => {
+            return fx(2).map((_, j) => {
+              console.log("switch", state[`bus${i + 1}fx${j + 1}`]);
+              switch (state[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb2":
-                  return <Reverber key={i} reverb={reverb2.current} />;
+                  return <Reverber key="reverb2" reverb={reverb2.current} />;
                 case "delay2":
                   return (
                     <Delay
-                      key={i}
+                      key={`bus${i}delay${j}`}
                       delay={
                         delay2.current !== undefined ? delay2.current : null
                       }
