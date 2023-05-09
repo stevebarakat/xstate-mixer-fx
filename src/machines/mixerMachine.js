@@ -24,11 +24,7 @@ export const mixerMachine = createMachine(
       pan: initialPans,
       solo: initialSolos,
       mute: initialMutes,
-      bus1fx1: "nofx",
-      bus1fx2: "nofx",
-      bus2fx1: "nofx",
-      bus2fx2: "nofx",
-      state: {
+      activeBuses: {
         bus1fx1: "nofx",
         bus1fx2: "nofx",
         bus2fx1: "nofx",

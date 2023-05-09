@@ -2,7 +2,7 @@ import { MixerMachineContext } from "../App";
 import { array as fx } from "../utils";
 import Range from "./Range";
 
-function Bus({ busChannels, busIndex, isOpen, setIsOpen }) {
+function Bus({ busChannels, busIndex }) {
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
   const [state, send] = MixerMachineContext.useActor();
 
@@ -10,9 +10,11 @@ function Bus({ busChannels, busIndex, isOpen, setIsOpen }) {
     <div>
       <button
         className="button effect-select"
-        onClick={(e) => setIsOpen(!isOpen)}
+        onClick={(e) => {
+          send("TOGGLE");
+        }}
       >
-        {isOpen ? "Close" : "Open"} FX
+        {state.hasTag("active") ? "Close" : "Open"} FX
       </button>
 
       {fx(2).map((_, i) => {
