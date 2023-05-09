@@ -13,6 +13,13 @@ import { Rnd } from "react-rnd";
 import { MixerMachineContext } from "../App";
 import { shallowEqual } from "@xstate/react";
 
+const defaults = {
+  x: 0,
+  y: 0,
+  width: 320,
+  height: "auto",
+};
+
 export const Mixer = ({ song }) => {
   const { send } = MixerMachineContext.useActorRef();
   const activeBuses = MixerMachineContext.useSelector((state) => {
@@ -28,10 +35,6 @@ export const Mixer = ({ song }) => {
   const tracks = song.tracks;
   const [channels] = useChannelStrip({ tracks });
 
-  // const reverb1 = useRef(new Reverb().toDestination());
-  // const delay1 = useRef(new FeedbackDelay().toDestination());
-  // const reverb2 = useRef(new Reverb().toDestination());
-  // const delay2 = useRef(new FeedbackDelay().toDestination());
   const busChannels = useRef([new Channel(), new Channel()]);
 
   const fx = useRef({
@@ -88,16 +91,7 @@ export const Mixer = ({ song }) => {
         {song.artist} - {song.title}
       </div>
       {isActive && (
-        <Rnd
-          className="fx-panel"
-          default={{
-            x: 0,
-            y: 0,
-            width: 320,
-            height: "auto",
-          }}
-          cancel="input"
-        >
+        <Rnd className="fx-panel" default={defaults} cancel="input">
           <button
             onClick={(e) => {
               send("TOGGLE");
@@ -130,16 +124,7 @@ export const Mixer = ({ song }) => {
         </Rnd>
       )}
       {isActive && (
-        <Rnd
-          className="fx-panel"
-          default={{
-            x: 0,
-            y: 0,
-            width: 320,
-            height: "auto",
-          }}
-          cancel="input"
-        >
+        <Rnd className="fx-panel" default={defaults} cancel="input">
           <button
             onClick={(e) => {
               send("TOGGLE");
