@@ -3,10 +3,9 @@ import { array as fx } from "../utils";
 import Range from "./Range";
 
 function Bus({ busChannel, busIndex, state, dispatch, isOpen, setIsOpen }) {
-  const [busVolumes, setBusVolumes] = useState([-32, -32]);
-
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
 
+  const [busVolumes, setBusVolumes] = useState([-32, -32]);
   console.log("currentMix", currentMix);
 
   console.log("state", state);
@@ -29,8 +28,15 @@ function Bus({ busChannel, busIndex, state, dispatch, isOpen, setIsOpen }) {
                 type: `SET_BUS${busIndex + 1}_FX${i + 1}`,
                 payload: e.target.value,
               });
+              localStorage.setItem(
+                "currentMix",
+                JSON.stringify({
+                  ...state,
+                  [`bus${busIndex + 1}fx${i + 1}`]: e.target.value,
+                })
+              );
             }}
-            defaultValue={state[`bus${busIndex + 1}fx${i + 1}`]}
+            defaultValue={currentMix[`bus${busIndex + 1}fx${i + 1}`]}
           >
             <option value={`nofx${busIndex + 1}`}>{`FX ${i + 1}`}</option>
             <option value={`reverb${busIndex + 1}`}>Reverb</option>
