@@ -17,35 +17,32 @@ function App() {
     switch (e.target.value) {
       case "roxanne":
         localStorage.setItem("song", JSON.stringify(roxanne));
-        currentMix = {
-          songSlug: "roxanne",
-          reverbsMix: [0.5, 0.5],
-        };
         localStorage.setItem("currentMix", JSON.stringify(currentMix));
         currentTracks = roxanne.tracks;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        window.location.reload();
         setSourceSong(roxanne);
+        window.location.reload();
         break;
       case "aDayInTheLife":
         localStorage.setItem("song", JSON.stringify(aDayInTheLife));
         currentTracks = aDayInTheLife.tracks;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        window.location.reload();
         setSourceSong(aDayInTheLife);
+        window.location.reload();
         break;
       case "blueMonday":
         localStorage.setItem("song", JSON.stringify(blueMonday));
         currentTracks = blueMonday.tracks;
-        window.location.reload();
+        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         setSourceSong(blueMonday);
+        window.location.reload();
         break;
       case "justDance":
         localStorage.setItem("song", JSON.stringify(justDance));
         currentTracks = justDance.tracks;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        window.location.reload();
         setSourceSong(justDance);
+        window.location.reload();
         break;
 
       default:

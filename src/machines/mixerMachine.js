@@ -3,7 +3,7 @@ import { pure } from "xstate/lib/actions";
 import { start, getContext, Destination, Transport as t } from "tone";
 import { dBToPercent, scale } from "../utils/scale";
 import { getSong } from "../utils/getSong";
-import { roxanne } from "../songs";
+import { blueMonday, roxanne } from "../songs";
 
 const context = getContext();
 const [song, currentMix, currentTracks] = getSong(roxanne);

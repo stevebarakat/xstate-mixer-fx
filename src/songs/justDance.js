@@ -46,6 +46,13 @@ export const justDance = {
       pan: 0,
       mute: false,
       solo: false,
+      activeBusses: [false, false],
+      reverbsMix: [0.5, 0.5],
+      reverbsPreDelay: [0.5, 0.5],
+      reverbsDecay: [0.5, 0.5],
+      delaysMix: [0.5, 0.5],
+      delaysTime: [1, 1],
+      delaysFeedback: [0.5, 0.5],
     },
     {
       name: "Synth 1",

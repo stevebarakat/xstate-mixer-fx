@@ -1,17 +1,18 @@
 export function getSong(defaultSong) {
   const defaultSongString = JSON.stringify(defaultSong);
-  let song = JSON.parse(localStorage.getItem("song"));
+  let song =
+    JSON.parse(localStorage.getItem("song")) ??
+    localStorage.setItem("song", defaultSongString);
   let currentMix = JSON.parse(localStorage.getItem("currentMix"));
   let currentTracks = JSON.parse(localStorage.getItem("currentTracks"));
 
-  if (!song) {
-    localStorage.setItem("song", defaultSongString);
-    song = defaultSong;
-  }
-
+  // if (!song) {
+  //   localStorage.setItem("song", defaultSongString);
+  //   song = defaultSong;
+  // }
   if (!currentMix) {
     currentMix = {
-      songSlug: "roxanne",
+      // songSlug: song.slug,
       state: {
         bus1fx1: "nofx",
         bus1fx2: "nofx",
