@@ -6,7 +6,7 @@ export const blueMonday = {
   studio: "Britannia Row Studios",
   location: "London, England",
   bpm: 139,
-  songStart: 0,
+  start: 0,
   end: 490,
   tracks: [
     {

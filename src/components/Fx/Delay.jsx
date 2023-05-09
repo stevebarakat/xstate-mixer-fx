@@ -4,6 +4,10 @@ export default function Delay({ delay, busIndex, fxIndex }) {
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
   const [state, send] = MixerMachineContext.useActor();
 
+  console.log(
+    "state.context.busFxData.delaysMix[busIndex][fxIndex]",
+    state.context.busFxData
+  );
   return (
     <div>
       <h3>Delay</h3>
@@ -16,7 +20,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           min={0}
           max={1}
           step={0.01}
-          value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
+          // value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
           onChange={(e) => {
             send({
               type: "CHANGE_DELAYS_MIX",
@@ -37,7 +41,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           min={0}
           max={1}
           step={0.01}
-          value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
+          // value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
           onChange={(e) => {
             send({
               type: "CHANGE_DELAYS_TIME",
@@ -58,7 +62,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           min={0}
           max={1}
           step={0.01}
-          value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
+          // value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
           onChange={(e) => {
             send({
               type: "CHANGE_DELAYS_FEEDBACK",

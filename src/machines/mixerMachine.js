@@ -24,8 +24,8 @@ export const mixerMachine = createMachine(
     id: "mixer",
     initial: "loading",
     context: {
-      songStart: song.songStart,
-      end: song.end,
+      start: song?.start,
+      end: song?.end,
       currentTime: t.seconds,
       mainVolume: currentMix.mainVolume,
       busVolumes: initialBusVolumes,
@@ -44,12 +44,12 @@ export const mixerMachine = createMachine(
         bus2: { isOpen: false, position: { x: 0, y: 0 } },
       },
       busFxData: {
-        reverbsMix: currentMix.reverbsMix,
-        reverbsPreDelay: currentMix.reverbsPreDelay,
-        reverbsDecay: currentMix.reverbsDecay,
-        delaysMix: currentMix.delaysMix,
-        delaysTime: currentMix.delaysTime,
-        delaysFeedback: currentMix.delaysFeedback,
+        reverbsMix: currentMix.busFxData.reverbsMix,
+        reverbsPreDelay: currentMix.busFxData.reverbsPreDelay,
+        reverbsDecay: currentMix.busFxData.reverbsDecay,
+        delaysMix: currentMix.busFxData.delaysMix,
+        delaysTime: currentMix.busFxData.delaysTime,
+        delaysFeedback: currentMix.busFxData.delaysFeedback,
       },
     },
     on: {
@@ -102,9 +102,7 @@ export const mixerMachine = createMachine(
 
       rewind: pure((context) => {
         t.seconds =
-          t.seconds > 10 + context.songStart
-            ? t.seconds - 10
-            : context.songStart;
+          t.seconds > 10 + context.start ? t.seconds - 10 : context.start;
       }),
 
       changeMainVolume: pure((_, { target }) => {
@@ -252,19 +250,19 @@ export const mixerMachine = createMachine(
         delay.wet.value = value;
         const tempDelaysMix = context.busFxData.delaysMix;
         tempDelaysMix[busIndex][fxIndex] = value;
-        currentMix.busFxData.delaysFeedback[busIndex][fxIndex] = value;
+        currentMix.busFxData.delaysMix[busIndex][fxIndex] = value;
         localStorage.setItem("currentMix", JSON.stringify(currentMix));
-        return [assign({ delaysFeedback: tempDelaysMix })];
+        return [assign({ delaysMix: tempDelaysMix })];
       }),
       changeDelaysTime: pure(
         (context, { target, delay, busIndex, fxIndex }) => {
           const value = parseFloat(target.value);
-          delay.feedback.value = value;
-          const tempDelaysFeedback = context.busFxData.delaysFeedback;
-          tempDelaysFeedback[busIndex][fxIndex] = value;
-          currentMix.busFxData.delaysFeedback[busIndex][fxIndex] = value;
+          delay.delayTime.value = value;
+          const tempDelaysTime = context.busFxData.delaysTime;
+          tempDelaysTime[busIndex][fxIndex] = value;
+          currentMix.busFxData.delaysTime[busIndex][fxIndex] = value;
           localStorage.setItem("currentMix", JSON.stringify(currentMix));
-          return [assign({ delaysFeedback: tempDelaysFeedback })];
+          return [assign({ delaysTime: tempDelaysTime })];
         }
       ),
       changeDelaysFeedback: pure(

@@ -7,9 +7,9 @@ function Clock({ song }) {
   const [clock, setClock] = useState(formatMilliseconds(0));
 
   // make sure song starts at begining and stops at end
-  if (song.end !== null && song.songStart !== null) {
-    if (t.seconds < song.songStart) {
-      t.seconds = song.songStart;
+  if (song.end !== null && song.start !== null) {
+    if (t.seconds < song.start) {
+      t.seconds = song.start;
     }
     if (t.seconds > song.end) {
       t.stop();

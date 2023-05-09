@@ -6,7 +6,7 @@ export const justDance = {
   studio: "Record Plant Studios",
   location: "Los Angeles, CA",
   bpm: 119,
-  songStart: 4,
+  start: 4,
   end: 248,
   tracks: [
     {

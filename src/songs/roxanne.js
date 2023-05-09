@@ -7,7 +7,7 @@ export const roxanne = {
   location: "Leatherhead, Surrey, U.K.",
   slug: "roxanne",
   bpm: 92,
-  songStart: 1,
+  start: 1,
   end: 180,
   tracks: [
     {

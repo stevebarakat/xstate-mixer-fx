@@ -6,7 +6,7 @@ export const aDayInTheLife = {
   studio: "Abby Road",
   location: "London, England",
   bpm: 79,
-  songStart: 1.5,
+  start: 1.5,
   end: 267,
   tracks: [
     {
