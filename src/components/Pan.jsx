@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { MixerMachineContext } from "../App";
 import Range from "./Range";
 
 function Pan({ trackIndex, channel }) {
-  const [pans, setPans] = useState([0, 0, 0, 0]);
-  const currentTracks = JSON.parse(localStorage.getItem("currentTracks"));
+  const [state, send] = MixerMachineContext.useActor();
+  const pan = parseFloat(state.context.pans[trackIndex]);
 
   return (
     <>
@@ -13,19 +13,13 @@ function Pan({ trackIndex, channel }) {
         min={-1}
         max={1}
         step={0.01}
-        value={pans[trackIndex]}
+        value={pan}
         onChange={(e) => {
-          const trackIndex = e.target.id.at(-1);
-          const value = parseFloat(e.target.value);
-          channel.pan.value = value;
-          const tempPans = pans;
-          tempPans[trackIndex] = value;
-          setPans([...tempPans]);
-          currentTracks[trackIndex].pan = value;
-          localStorage.setItem(
-            "currentTracks",
-            JSON.stringify([...currentTracks])
-          );
+          send({
+            type: "CHANGE_PAN",
+            target: e.target,
+            channel,
+          });
         }}
       />
     </>

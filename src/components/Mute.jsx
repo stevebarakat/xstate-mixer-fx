@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { MixerMachineContext } from "../App";
 
 function Mute({ trackIndex, channel }) {
-  const currentTracks = JSON.parse(localStorage.getItem("currentTracks"));
-
-  const [mutes, setMutes] = useState([false, false, false, false]);
+  const [state, send] = MixerMachineContext.useActor();
+  const mute = state.context.mutes[trackIndex];
 
   return (
     <>
@@ -11,19 +10,13 @@ function Mute({ trackIndex, channel }) {
         id={`trackMute${trackIndex}`}
         type="checkbox"
         onChange={(e) => {
-          const trackIndex = e.target.id.at(-1);
-          const checked = e.target.checked;
-          channel.mute = checked;
-          const tempMutes = mutes;
-          tempMutes[trackIndex] = checked;
-          setMutes([...tempMutes]);
-          currentTracks[trackIndex].mute = checked;
-          localStorage.setItem(
-            "currentTracks",
-            JSON.stringify([...currentTracks])
-          );
+          send({
+            type: "TOGGLE_MUTE",
+            target: e.target,
+            channel,
+          });
         }}
-        checked={mutes[trackIndex]}
+        checked={mute}
       />
       <label htmlFor={`trackMute${trackIndex}`}>M</label>
     </>

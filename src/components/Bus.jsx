@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { MixerMachineContext } from "../App";
 import { array as fx } from "../utils";
 import Range from "./Range";
@@ -6,9 +5,6 @@ import Range from "./Range";
 function Bus({ busChannels, busIndex, isOpen, setIsOpen }) {
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
   const [state, send] = MixerMachineContext.useActor();
-  // const [busVolumes, setBusVolumes] = useState([-32, -32]);
-
-  console.log("state", state);
 
   return (
     <div>

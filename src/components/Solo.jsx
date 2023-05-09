@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { MixerMachineContext } from "../App";
 
 function Solo({ trackIndex, channel }) {
-  const currentTracks = JSON.parse(localStorage.getItem("currentTracks"));
-
-  const [solos, setSolos] = useState([false, false, false, false]);
+  const [state, send] = MixerMachineContext.useActor();
+  const solo = state.context.solos[trackIndex];
 
   return (
     <>
@@ -11,19 +10,13 @@ function Solo({ trackIndex, channel }) {
         id={`trackSolo${trackIndex}`}
         type="checkbox"
         onChange={(e) => {
-          const trackIndex = e.target.id.at(-1);
-          const checked = e.target.checked;
-          channel.solo = checked;
-          const tempSolos = solos;
-          tempSolos[trackIndex] = checked;
-          setSolos([...tempSolos]);
-          currentTracks[trackIndex].solo = checked;
-          localStorage.setItem(
-            "currentTracks",
-            JSON.stringify([...currentTracks])
-          );
+          send({
+            type: "TOGGLE_SOLO",
+            target: e.target,
+            channel,
+          });
         }}
-        checked={solos[trackIndex]}
+        checked={solo}
       />
       <label htmlFor={`trackSolo${trackIndex}`}>S</label>
     </>
