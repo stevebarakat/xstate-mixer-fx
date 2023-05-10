@@ -6,23 +6,25 @@ export default function Reverber({ reverb, busIndex, fxIndex }) {
 
   return (
     <div>
-      <h3>Reverb</h3>
-      <div className="power-button">
-        <input
-          id={`bus${busIndex}reverbBypass`}
-          type="checkbox"
-          onChange={(e) => {
-            send({
-              type: "BYPASS_REVERB",
-              checked: e.target.checked,
-              reverb,
-              busIndex,
-              fxIndex,
-            });
-          }}
-          checked={state.context.busFxData.reverbsBypass[busIndex][fxIndex]}
-        />
-        <label htmlFor={`bus${busIndex}reverbBypass`}>{powerIcon}</label>
+      <div className="flex gap12">
+        <h3>Reverb</h3>
+        <div className="power-button">
+          <input
+            id={`bus${busIndex}reverbBypass`}
+            type="checkbox"
+            onChange={(e) => {
+              send({
+                type: "BYPASS_REVERB",
+                checked: e.target.checked,
+                reverb,
+                busIndex,
+                fxIndex,
+              });
+            }}
+            checked={state.context.busFxData.reverbsBypass[busIndex][fxIndex]}
+          />
+          <label htmlFor={`bus${busIndex}reverbBypass`}>{powerIcon}</label>
+        </div>
       </div>
       <div className="flex-y">
         <label htmlFor="mix">Mix:</label>

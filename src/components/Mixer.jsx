@@ -83,6 +83,9 @@ export const Mixer = ({ song }) => {
     });
   }, [buses]);
 
+  console.log("bus1.isOpen", bus1.isOpen);
+  console.log("bus2.isOpen", bus2.isOpen);
+
   return isLoading ? (
     <Loader song={song} />
   ) : (
@@ -110,7 +113,7 @@ export const Mixer = ({ song }) => {
                 case "reverb1":
                   return (
                     <Reverber
-                      key="reverb1"
+                      key={`bus${i}reverb${j}`}
                       reverb={fx.current.reverb1}
                       channel={busChannels.current[0]}
                       busIndex={0}
@@ -155,7 +158,7 @@ export const Mixer = ({ song }) => {
                 case "reverb2":
                   return (
                     <Reverber
-                      key="reverb2"
+                      key={`bus${i}reverb${j}`}
                       reverb={fx.current.reverb2}
                       channel={busChannels.current[1]}
                       busIndex={1}
