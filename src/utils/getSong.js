@@ -16,9 +16,17 @@ export function getSong(defaultSong) {
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
-      busData: {
-        bus1: { isOpen: false, position: { x: 0, y: 0 } },
-        bus2: { isOpen: false, position: { x: 0, y: 0 } },
+      busFxPanels: {
+        bus1: {
+          position: { x: 0, y: 0 },
+          size: { width: 325, height: "auto" },
+          isOpen: false,
+        },
+        bus2: {
+          position: { x: 0, y: 0 },
+          size: { width: 325, height: "auto" },
+          isOpen: false,
+        },
       },
       busFxData: {
         reverbsBypass: [false, false, false, false],

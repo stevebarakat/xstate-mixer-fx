@@ -18,7 +18,9 @@ function Bus({ busChannels, busIndex }) {
           });
         }}
       >
-        {state.context.busData[`bus${busIndex + 1}`].isOpen ? "Close" : "Open"}
+        {state.context.busFxPanels[`bus${busIndex + 1}`].isOpen
+          ? "Close"
+          : "Open"}
         FX
       </ChannelButton>
 

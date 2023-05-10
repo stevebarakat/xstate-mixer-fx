@@ -28,8 +28,8 @@ export const Mixer = ({ song }) => {
     return buses;
   }, shallowEqual);
   const { bus1, bus2 } = MixerMachineContext.useSelector((state) => {
-    const { busData } = state.context;
-    return busData;
+    const { busFxPanels } = state.context;
+    return busFxPanels;
   }, shallowEqual);
   const isLoading = MixerMachineContext.useSelector(
     (state) => state.value === "loading"

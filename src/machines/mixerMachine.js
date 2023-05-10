@@ -39,13 +39,13 @@ export const mixerMachine = createMachine(
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
-      busData: {
+      busFxPanels: {
         bus1: {
-          isOpen: !currentMix.busData.bus1.isOpen,
+          isOpen: !currentMix.busFxPanels.bus1.isOpen,
           position: { x: 0, y: 0 },
         },
         bus2: {
-          isOpen: !currentMix.busData.bus2.isOpen,
+          isOpen: !currentMix.busFxPanels.bus2.isOpen,
           position: { x: 0, y: 0 },
         },
       },
@@ -222,10 +222,10 @@ export const mixerMachine = createMachine(
       }),
 
       setBusData: assign((context, { busIndex }) => {
-        context.busData = {
-          ...context.busData,
+        context.busFxPanels = {
+          ...context.busFxPanels,
           [`bus${busIndex + 1}`]: {
-            isOpen: !context.busData[`bus${busIndex + 1}`].isOpen,
+            isOpen: !context.busFxPanels[`bus${busIndex + 1}`].isOpen,
             position: {
               x: 0,
               y: 0,
@@ -236,10 +236,10 @@ export const mixerMachine = createMachine(
           "currentMix",
           JSON.stringify({
             ...currentMix,
-            busData: {
-              ...context.busData,
+            busFxPanels: {
+              ...context.busFxPanels,
               [`bus${busIndex + 1}`]: {
-                isOpen: !context.busData[`bus${busIndex + 1}`].isOpen,
+                isOpen: !context.busFxPanels[`bus${busIndex + 1}`].isOpen,
                 position: {
                   x: 0,
                   y: 0,
