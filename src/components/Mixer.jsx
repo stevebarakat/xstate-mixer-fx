@@ -22,16 +22,18 @@ const defaults = {
 };
 
 export const Mixer = ({ song }) => {
-  const [state] = MixerMachineContext.useActor();
   const { send } = MixerMachineContext.useActorRef();
-  const { buses } = MixerMachineContext.useSelector((state) => {
-    const { buses, busData } = state.context;
-    return { buses, busData };
+  const buses = MixerMachineContext.useSelector((state) => {
+    const { buses } = state.context;
+    return buses;
+  }, shallowEqual);
+  const { bus1, bus2 } = MixerMachineContext.useSelector((state) => {
+    const { busData } = state.context;
+    return busData;
   }, shallowEqual);
   const isLoading = MixerMachineContext.useSelector(
     (state) => state.value === "loading"
   );
-  const { bus1, bus2 } = state.context.busData;
   const tracks = song.tracks;
   const [channels] = useChannelStrip({ tracks });
 
@@ -83,8 +85,8 @@ export const Mixer = ({ song }) => {
     });
   }, [buses]);
 
-  console.log("bus1.isOpen", bus1.isOpen);
-  console.log("bus2.isOpen", bus2.isOpen);
+  // console.log("bus1.isOpen", bus1.isOpen);
+  // console.log("bus2.isOpen", bus2.isOpen);
 
   return isLoading ? (
     <Loader song={song} />
