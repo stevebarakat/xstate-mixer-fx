@@ -251,17 +251,18 @@ export const mixerMachine = createMachine(
         );
       }),
 
-      // bypassReverb: pure(
-      //   (context, { target, reverb, busIndex, fxIndex }) => {
-      //     const value = target.value;
-      //     reverb.wet.value = value;
-      //     const tempReverbsMix = context.busFxData.reverbsMix;
-      //     tempReverbsMix[busIndex][fxIndex] = value;
-      //     currentMix.busFxData.reverbsMix[busIndex][fxIndex] = value;
-      //     localStorage.setItem("currentMix", JSON.stringify(currentMix));
-      //     return [assign({ reverbsMix: tempReverbsMix })];
-      //   }
-      // ),
+      bypassReverb: pure((context, { checked, reverb, busIndex, fxIndex }) => {
+        const tempReverbsBypass = context.busFxData.reverbsBypass;
+        tempReverbsBypass[busIndex] = checked;
+        currentMix.busFxData.reverbsBypass[busIndex] = checked;
+        if (checked) {
+          reverb.disconnect();
+        } else {
+          reverb.connect(Destination);
+        }
+        localStorage.setItem("currentMix", JSON.stringify(currentMix));
+        return [assign({ reverbsBypass: tempReverbsBypass })];
+      }),
 
       changeReverbsMix: pure(
         (context, { target, reverb, busIndex, fxIndex }) => {

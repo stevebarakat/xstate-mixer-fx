@@ -8,7 +8,7 @@ export const powerIcon = (
     strokeLinecap="round"
     strokeLinejoin="round"
     strokeWidth="2"
-    class="lucide lucide-power"
+    className="lucide lucide-power"
   >
     <path d="M18.36 6.64a9 9 0 1 1-12.73 0M12 2v10" />
   </svg>

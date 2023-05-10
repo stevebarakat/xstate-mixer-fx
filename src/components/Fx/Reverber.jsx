@@ -1,11 +1,29 @@
 import { MixerMachineContext } from "../../App";
+import { powerIcon } from "../../assets/icons";
 
 export default function Reverber({ reverb, busIndex, fxIndex }) {
-  const [, send] = MixerMachineContext.useActor();
+  const [state, send] = MixerMachineContext.useActor();
 
   return (
     <div>
       <h3>Reverb</h3>
+      <div className="power-button">
+        <input
+          id={`bus${busIndex}reverbBypass`}
+          type="checkbox"
+          onChange={(e) => {
+            send({
+              type: "BYPASS_REVERB",
+              checked: e.target.checked,
+              reverb,
+              busIndex,
+              fxIndex,
+            });
+          }}
+          checked={state.context.busFxData.reverbsBypass[busIndex][fxIndex]}
+        />
+        <label htmlFor={`bus${busIndex}reverbBypass`}>{powerIcon}</label>
+      </div>
       <div className="flex-y">
         <label htmlFor="mix">Mix:</label>
         <input

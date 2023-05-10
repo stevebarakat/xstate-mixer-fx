@@ -1,5 +1,5 @@
 import { MixerMachineContext } from "../../App";
-import { powerIcon } from "../../assets/icons/powerIcon";
+import { powerIcon } from "../../assets/icons";
 
 export default function Delay({ delay, busIndex, fxIndex }) {
   const [state, send] = MixerMachineContext.useActor();
