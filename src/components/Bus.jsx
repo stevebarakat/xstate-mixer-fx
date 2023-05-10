@@ -7,10 +7,6 @@ function Bus({ busChannels, busIndex }) {
   const currentMix = JSON.parse(localStorage.getItem("currentMix"));
   const [state, send] = MixerMachineContext.useActor();
 
-  console.log(
-    "state.context.busData.bus1.isOpen",
-    state.context.busData[`bus${busIndex + 1}`].isOpen
-  );
   return (
     <div>
       <ChannelButton

@@ -1,11 +1,35 @@
 import { MixerMachineContext } from "../../App";
+import { powerIcon } from "../../assets/icons/powerIcon";
 
 export default function Delay({ delay, busIndex, fxIndex }) {
-  const [, send] = MixerMachineContext.useActor();
+  const [state, send] = MixerMachineContext.useActor();
 
+  console.log(
+    "state.context.busFxData.delaysMix[busIndex][fxIndex]",
+    state.context.busFxData.delaysMix[busIndex][fxIndex]
+  );
   return (
     <div>
-      <h3>Delay</h3>
+      <div className="flex gap12">
+        <h3>Delay</h3>
+        <div className="power-button">
+          <input
+            id={`bus${busIndex}delayBypass`}
+            type="checkbox"
+            onChange={(e) => {
+              send({
+                type: "BYPASS_DELAY",
+                checked: e.target.checked,
+                delay,
+                busIndex,
+                fxIndex,
+              });
+            }}
+            checked={state.context.busFxData.delaysBypass[busIndex][fxIndex]}
+          />
+          <label htmlFor={`bus${busIndex}delayBypass`}>{powerIcon}</label>
+        </div>
+      </div>
       <div className="flex-y">
         <label htmlFor="mix">Mix:</label>
         <input
@@ -15,7 +39,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           min={0}
           max={1}
           step={0.01}
-          // value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
+          value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
           onChange={(e) => {
             send({
               type: "CHANGE_DELAYS_MIX",
@@ -36,7 +60,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           min={0}
           max={1}
           step={0.01}
-          // value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
+          value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
           onChange={(e) => {
             send({
               type: "CHANGE_DELAYS_TIME",
@@ -57,7 +81,7 @@ export default function Delay({ delay, busIndex, fxIndex }) {
           min={0}
           max={1}
           step={0.01}
-          // value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
+          value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
           onChange={(e) => {
             send({
               type: "CHANGE_DELAYS_FEEDBACK",

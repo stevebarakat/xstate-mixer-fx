@@ -13,10 +13,10 @@ import { roxanne } from "../songs";
 const actx = getAudioContext();
 const [song, currentMix, currentTracks] = getSong(roxanne);
 const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
+const initialBusVolumes = currentMix.busVolumes.map((volume) => volume);
 const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
 const initialMutes = currentTracks.map((currentTrack) => currentTrack.mute);
 const initialSolos = currentTracks.map((currentTrack) => currentTrack.solo);
-const initialBusVolumes = currentMix.busVolumes.map((volume) => volume);
 
 export const mixerMachine = createMachine(
   {
@@ -40,13 +40,21 @@ export const mixerMachine = createMachine(
         bus2fx2: "nofx",
       },
       busData: {
-        bus1: { isOpen: false, position: { x: 0, y: 0 } },
-        bus2: { isOpen: false, position: { x: 0, y: 0 } },
+        bus1: {
+          isOpen: !currentMix.busData.bus1.isOpen,
+          position: { x: 0, y: 0 },
+        },
+        bus2: {
+          isOpen: !currentMix.busData.bus2.isOpen,
+          position: { x: 0, y: 0 },
+        },
       },
       busFxData: {
+        reverbsBypass: currentMix.busFxData.reverbsBypass,
         reverbsMix: currentMix.busFxData.reverbsMix,
         reverbsPreDelay: currentMix.busFxData.reverbsPreDelay,
         reverbsDecay: currentMix.busFxData.reverbsDecay,
+        delaysBypass: currentMix.busFxData.delaysBypass,
         delaysMix: currentMix.busFxData.delaysMix,
         delaysTime: currentMix.busFxData.delaysTime,
         delaysFeedback: currentMix.busFxData.delaysFeedback,
@@ -64,9 +72,11 @@ export const mixerMachine = createMachine(
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
+      BYPASS_REVERB: { actions: "bypassReverb" },
       CHANGE_REVERBS_MIX: { actions: "changeReverbsMix" },
       CHANGE_REVERBS_PREDELAY: { actions: "changeReverbsPredelay" },
       CHANGE_REVERBS_DECAY: { actions: "changeReverbsDecay" },
+      BYPASS_DELAY: { actions: "bypassDelay" },
       CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
       CHANGE_DELAYS_TIME: { actions: "changeDelaysTime" },
       CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
@@ -217,6 +227,10 @@ export const mixerMachine = createMachine(
           ...context.busData,
           [`bus${busIndex + 1}`]: {
             isOpen: !context.busData[`bus${busIndex + 1}`].isOpen,
+            position: {
+              x: 0,
+              y: 0,
+            },
           },
         };
         localStorage.setItem(
@@ -227,11 +241,27 @@ export const mixerMachine = createMachine(
               ...context.busData,
               [`bus${busIndex + 1}`]: {
                 isOpen: !context.busData[`bus${busIndex + 1}`].isOpen,
+                position: {
+                  x: 0,
+                  y: 0,
+                },
               },
             },
           })
         );
       }),
+
+      // bypassReverb: pure(
+      //   (context, { target, reverb, busIndex, fxIndex }) => {
+      //     const value = target.value;
+      //     reverb.wet.value = value;
+      //     const tempReverbsMix = context.busFxData.reverbsMix;
+      //     tempReverbsMix[busIndex][fxIndex] = value;
+      //     currentMix.busFxData.reverbsMix[busIndex][fxIndex] = value;
+      //     localStorage.setItem("currentMix", JSON.stringify(currentMix));
+      //     return [assign({ reverbsMix: tempReverbsMix })];
+      //   }
+      // ),
 
       changeReverbsMix: pure(
         (context, { target, reverb, busIndex, fxIndex }) => {
@@ -268,6 +298,19 @@ export const mixerMachine = createMachine(
           return [assign({ reverbsDecay: tempReverbsDecay })];
         }
       ),
+
+      bypassDelay: pure((context, { checked, delay, busIndex, fxIndex }) => {
+        const tempDelaysBypass = context.busFxData.delaysBypass;
+        tempDelaysBypass[busIndex] = checked;
+        currentMix.busFxData.delaysBypass[busIndex] = checked;
+        if (checked) {
+          delay.disconnect();
+        } else {
+          delay.connect(Destination);
+        }
+        localStorage.setItem("currentMix", JSON.stringify(currentMix));
+        return [assign({ delaysBypass: tempDelaysBypass })];
+      }),
 
       changeDelaysMix: pure((context, { target, delay, busIndex, fxIndex }) => {
         const value = parseFloat(target.value);

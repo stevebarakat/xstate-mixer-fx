@@ -1,8 +1,6 @@
 .flex {
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: fit-content;
   height: fit-content;
 }
 
@@ -56,6 +54,8 @@ h2 {
 
 h3 {
   font-size: 1.753rem;
+  line-height: 2.25;
+  margin: 0;
 }
 
 h4 {

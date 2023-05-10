@@ -114,6 +114,7 @@
   margin-bottom: 4px;
 }
 
+.power-button label,
 .bus-btn label,
 .chan-strip-btn label {
   border: 1px solid transparent;
@@ -134,12 +135,14 @@
   width: 50%;
 }
 
+.power-button input[type="checkbox"],
 .bus-btn input[type="checkbox"],
 .chan-strip-btn input[type="checkbox"] {
   position: absolute;
   appearance: none;
 }
 
+.power-button input[type="checkbox"]:checked + label,
 .bus-btn input[type="checkbox"]:checked + label,
 .chan-strip-btn input[type="checkbox"]:checked + label {
   background: var(--primary-color);
@@ -147,6 +150,7 @@
   transition: all 0.2s;
 }
 
+.power-button input[type="checkbox"]:hover + label,
 .bus-btn input[type="checkbox"]:hover + label,
 .chan-strip-btn input[type="checkbox"]:hover + label {
   border: 1px solid var(--primary-color);

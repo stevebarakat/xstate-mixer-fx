@@ -21,6 +21,7 @@ export function getSong(defaultSong) {
         bus2: { isOpen: false, position: { x: 0, y: 0 } },
       },
       busFxData: {
+        reverbsBypass: [false, false, false, false],
         reverbsMix: [
           [0.5, 0.5],
           [0.5, 0.5],
@@ -33,6 +34,7 @@ export function getSong(defaultSong) {
           [0.5, 0.5],
           [0.5, 0.5],
         ],
+        delaysBypass: [false, false, false, false],
         delaysMix: [
           [0.5, 0.5],
           [0.5, 0.5],
