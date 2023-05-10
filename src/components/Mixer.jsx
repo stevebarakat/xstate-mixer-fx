@@ -22,16 +22,16 @@ const defaults = {
 };
 
 export const Mixer = ({ song }) => {
+  const [state] = MixerMachineContext.useActor();
   const { send } = MixerMachineContext.useActorRef();
-  const { buses, busData } = MixerMachineContext.useSelector((state) => {
+  const { buses } = MixerMachineContext.useSelector((state) => {
     const { buses, busData } = state.context;
     return { buses, busData };
   }, shallowEqual);
   const isLoading = MixerMachineContext.useSelector(
     (state) => state.value === "loading"
   );
-  const isOpen1 = busData.bus1.isOpen;
-  const isOpen2 = busData.bus2.isOpen;
+  const { bus1, bus2 } = state.context.busData;
   const tracks = song.tracks;
   const [channels] = useChannelStrip({ tracks });
 
@@ -90,7 +90,7 @@ export const Mixer = ({ song }) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      {isOpen1 && (
+      {bus1.isOpen && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
           <CloseButton
             id="bus-panel-1"
@@ -135,7 +135,7 @@ export const Mixer = ({ song }) => {
           })}
         </Rnd>
       )}
-      {isOpen2 && (
+      {bus2.isOpen && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
           <CloseButton
             id="bus-panel-1"

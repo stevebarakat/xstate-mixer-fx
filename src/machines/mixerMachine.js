@@ -106,8 +106,7 @@ export const mixerMachine = createMachine(
       play: () => (actx.state === "suspended" ? initializeAudio : t.start()),
 
       fastForward: pure((context) => {
-        t.seconds =
-          context.currentTime < context.end - 10 ? t.seconds + 10 : context.end;
+        t.seconds = t.seconds < context.end - 10 ? t.seconds + 10 : context.end;
       }),
 
       rewind: pure((context) => {
