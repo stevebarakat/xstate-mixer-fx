@@ -27,10 +27,13 @@ export const Mixer = ({ song }) => {
     const { buses } = state.context;
     return buses;
   }, shallowEqual);
-  const { bus1, bus2 } = MixerMachineContext.useSelector((state) => {
-    const { busFxPanels } = state.context;
-    return busFxPanels;
-  }, shallowEqual);
+  const { busFxPanel1, busFxPanel2 } = MixerMachineContext.useSelector(
+    (state) => {
+      const { busFxPanels } = state.context;
+      return busFxPanels;
+    },
+    shallowEqual
+  );
   const isLoading = MixerMachineContext.useSelector(
     (state) => state.value === "loading"
   );
@@ -85,9 +88,6 @@ export const Mixer = ({ song }) => {
     });
   }, [buses]);
 
-  // console.log("bus1.isOpen", bus1.isOpen);
-  // console.log("bus2.isOpen", bus2.isOpen);
-
   return isLoading ? (
     <Loader song={song} />
   ) : (
@@ -95,13 +95,13 @@ export const Mixer = ({ song }) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      {bus1.isOpen && (
+      {busFxPanel1.isOpen && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
           <CloseButton
             id="bus-panel-1"
             onClick={(e) => {
               send({
-                type: "SET_BUS_DATA",
+                type: "SAVE_BUS_PANELS",
                 busIndex: 0,
               });
             }}
@@ -140,13 +140,13 @@ export const Mixer = ({ song }) => {
           })}
         </Rnd>
       )}
-      {bus2.isOpen && (
+      {busFxPanel2.isOpen && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
           <CloseButton
             id="bus-panel-1"
             onClick={(e) => {
               send({
-                type: "SET_BUS_DATA",
+                type: "SAVE_BUS_PANELS",
                 busIndex: 1,
               });
             }}

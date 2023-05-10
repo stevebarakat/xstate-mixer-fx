@@ -13,12 +13,12 @@ function Bus({ busChannels, busIndex }) {
         id={`bus-panel-${busIndex}`}
         onClick={(e) => {
           send({
-            type: "SET_BUS_DATA",
+            type: "SAVE_BUS_PANELS",
             busIndex,
           });
         }}
       >
-        {state.context.busFxPanels[`bus${busIndex + 1}`].isOpen
+        {state.context.busFxPanels[`busFxPanel${busIndex + 1}`].isOpen
           ? "Close"
           : "Open"}
         FX

@@ -17,12 +17,12 @@ export function getSong(defaultSong) {
         bus2fx2: "nofx",
       },
       busFxPanels: {
-        bus1: {
+        busFxPanel1: {
           position: { x: 0, y: 0 },
           size: { width: 325, height: "auto" },
           isOpen: false,
         },
-        bus2: {
+        busFxPanel2: {
           position: { x: 0, y: 0 },
           size: { width: 325, height: "auto" },
           isOpen: false,

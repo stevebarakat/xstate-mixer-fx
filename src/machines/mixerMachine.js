@@ -40,12 +40,12 @@ export const mixerMachine = createMachine(
         bus2fx2: "nofx",
       },
       busFxPanels: {
-        bus1: {
-          isOpen: !currentMix.busFxPanels.bus1.isOpen,
+        busFxPanel1: {
+          isOpen: !currentMix.busFxPanels.busFxPanel1.isOpen,
           position: { x: 0, y: 0 },
         },
-        bus2: {
-          isOpen: !currentMix.busFxPanels.bus2.isOpen,
+        busFxPanel2: {
+          isOpen: !currentMix.busFxPanels.busFxPanel2.isOpen,
           position: { x: 0, y: 0 },
         },
       },
@@ -68,7 +68,7 @@ export const mixerMachine = createMachine(
       CHANGE_MAIN_VOLUME: { actions: "changeMainVolume" },
       CHANGE_BUS_VOLUMES: { actions: "changeBusVolumes" },
       SET_BUS_FX: { actions: "setBusFx" },
-      SET_BUS_DATA: { actions: "setBusData" },
+      SAVE_BUS_PANELS: { actions: "saveBusPanels" },
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
@@ -221,11 +221,11 @@ export const mixerMachine = createMachine(
         );
       }),
 
-      setBusData: assign((context, { busIndex }) => {
+      saveBusPanels: assign((context, { busIndex }) => {
         context.busFxPanels = {
           ...context.busFxPanels,
-          [`bus${busIndex + 1}`]: {
-            isOpen: !context.busFxPanels[`bus${busIndex + 1}`].isOpen,
+          [`busFxPanel${busIndex + 1}`]: {
+            isOpen: !context.busFxPanels[`busFxPanel${busIndex + 1}`].isOpen,
             position: {
               x: 0,
               y: 0,
@@ -238,8 +238,9 @@ export const mixerMachine = createMachine(
             ...currentMix,
             busFxPanels: {
               ...context.busFxPanels,
-              [`bus${busIndex + 1}`]: {
-                isOpen: !context.busFxPanels[`bus${busIndex + 1}`].isOpen,
+              [`busFxPanel${busIndex + 1}`]: {
+                isOpen:
+                  !context.busFxPanels[`busFxPanel${busIndex + 1}`].isOpen,
                 position: {
                   x: 0,
                   y: 0,
