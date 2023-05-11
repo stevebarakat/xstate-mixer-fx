@@ -10,19 +10,19 @@ export function getSong(defaultSong) {
     currentMix = {
       mainVolume: -32,
       busVolumes: [-32, -32],
-      buses: {
+      busFx: {
         bus1fx1: "nofx",
         bus1fx2: "nofx",
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
-      busFxPanels: {
-        busFxPanel1: {
+      busPanels: {
+        busPanel1: {
           position: { x: 0, y: 0 },
           size: { width: 325, height: "auto" },
           isOpen: false,
         },
-        busFxPanel2: {
+        busPanel2: {
           position: { x: 0, y: 0 },
           size: { width: 325, height: "auto" },
           isOpen: false,

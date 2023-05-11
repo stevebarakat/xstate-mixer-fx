@@ -33,19 +33,19 @@ export const mixerMachine = createMachine(
       pan: initialPans,
       solo: initialSolos,
       mute: initialMutes,
-      buses: {
+      busFx: {
         bus1fx1: "nofx",
         bus1fx2: "nofx",
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
-      busFxPanels: {
-        busFxPanel1: {
-          isOpen: !currentMix.busFxPanels.busFxPanel1.isOpen,
+      busPanels: {
+        busPanel1: {
+          isOpen: !currentMix.busPanels.busPanel1.isOpen,
           position: { x: 0, y: 0 },
         },
-        busFxPanel2: {
-          isOpen: !currentMix.busFxPanels.busFxPanel2.isOpen,
+        busPanel2: {
+          isOpen: !currentMix.busPanels.busPanel2.isOpen,
           position: { x: 0, y: 0 },
         },
       },
@@ -205,16 +205,16 @@ export const mixerMachine = createMachine(
       }),
 
       setBusFx: assign((context, { target, busIndex, fxIndex }) => {
-        context.buses = {
-          ...context.buses,
+        context.busFx = {
+          ...context.busFx,
           [`bus${busIndex + 1}fx${fxIndex + 1}`]: target.value,
         };
         localStorage.setItem(
           "currentMix",
           JSON.stringify({
             ...currentMix,
-            buses: {
-              ...context.buses,
+            busFx: {
+              ...context.busFx,
               [`bus${busIndex + 1}fx${fxIndex + 1}`]: target.value,
             },
           })
@@ -222,10 +222,10 @@ export const mixerMachine = createMachine(
       }),
 
       saveBusPanels: assign((context, { busIndex }) => {
-        context.busFxPanels = {
-          ...context.busFxPanels,
-          [`busFxPanel${busIndex + 1}`]: {
-            isOpen: !context.busFxPanels[`busFxPanel${busIndex + 1}`].isOpen,
+        context.busPanels = {
+          ...context.busPanels,
+          [`busPanel${busIndex + 1}`]: {
+            isOpen: !context.busPanels[`busPanel${busIndex + 1}`].isOpen,
             position: {
               x: 0,
               y: 0,
@@ -236,11 +236,10 @@ export const mixerMachine = createMachine(
           "currentMix",
           JSON.stringify({
             ...currentMix,
-            busFxPanels: {
-              ...context.busFxPanels,
-              [`busFxPanel${busIndex + 1}`]: {
-                isOpen:
-                  !context.busFxPanels[`busFxPanel${busIndex + 1}`].isOpen,
+            busPanels: {
+              ...context.busPanels,
+              [`busPanel${busIndex + 1}`]: {
+                isOpen: !context.busPanels[`busPanel${busIndex + 1}`].isOpen,
                 position: {
                   x: 0,
                   y: 0,

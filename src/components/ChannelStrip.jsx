@@ -24,7 +24,7 @@ function ChannelStrip({ track, trackIndex, channel, channels }) {
         />
         <label htmlFor={`bus1${trackIndex}`}>1</label>
         <input
-          id={`busFxPanel2${trackIndex}`}
+          id={`bp2${trackIndex}`}
           type="checkbox"
           onChange={(e) => {
             const id = e.target.id.at(-1);
@@ -34,7 +34,7 @@ function ChannelStrip({ track, trackIndex, channel, channels }) {
             }
           }}
         />
-        <label htmlFor={`busFxPanel2${trackIndex}`}>2</label>
+        <label htmlFor={`bp2${trackIndex}`}>2</label>
       </div>
       <div className="channel">
         <div className="chan-strip-btn">

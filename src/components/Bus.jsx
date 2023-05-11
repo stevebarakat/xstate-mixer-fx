@@ -18,7 +18,7 @@ function Bus({ busChannels, busIndex }) {
           });
         }}
       >
-        {state.context.busFxPanels[`busFxPanel${busIndex + 1}`].isOpen
+        {state.context.busPanels[`busPanel${busIndex + 1}`].isOpen
           ? "Close"
           : "Open"}
         FX
@@ -38,7 +38,7 @@ function Bus({ busChannels, busIndex }) {
               });
             }}
             defaultValue={
-              currentMix.buses[`bus${busIndex + 1}fx${fxIndex + 1}`]
+              currentMix.busFx[`bus${busIndex + 1}fx${fxIndex + 1}`]
             }
           >
             <option value={`nofx${busIndex + 1}`}>{`FX ${fxIndex + 1}`}</option>

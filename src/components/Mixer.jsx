@@ -23,17 +23,14 @@ const defaults = {
 
 export const Mixer = ({ song }) => {
   const { send } = MixerMachineContext.useActorRef();
-  const buses = MixerMachineContext.useSelector((state) => {
-    const { buses } = state.context;
-    return buses;
+  const busFx = MixerMachineContext.useSelector((state) => {
+    const { busFx } = state.context;
+    return busFx;
   }, shallowEqual);
-  const { busFxPanel1, busFxPanel2 } = MixerMachineContext.useSelector(
-    (state) => {
-      const { busFxPanels } = state.context;
-      return busFxPanels;
-    },
-    shallowEqual
-  );
+  const { busPanel1, busPanel2 } = MixerMachineContext.useSelector((state) => {
+    const { busPanels } = state.context;
+    return busPanels;
+  }, shallowEqual);
   const isLoading = MixerMachineContext.useSelector(
     (state) => state.value === "loading"
   );
@@ -52,7 +49,7 @@ export const Mixer = ({ song }) => {
   useEffect(() => {
     array(2).forEach((_, i) => {
       array(2).forEach((_, j) => {
-        switch (buses[`bus${i + 1}fx${j + 1}`]) {
+        switch (busFx[`bus${i + 1}fx${j + 1}`]) {
           case "nofx1":
             busChannels.current[0].disconnect();
             busChannels.current[0] = new Channel();
@@ -86,7 +83,7 @@ export const Mixer = ({ song }) => {
         }
       });
     });
-  }, [buses]);
+  }, [busFx]);
 
   return isLoading ? (
     <Loader song={song} />
@@ -95,7 +92,7 @@ export const Mixer = ({ song }) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      {busFxPanel1.isOpen && (
+      {busPanel1.isOpen && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
           <CloseButton
             id="bus-panel-1"
@@ -111,7 +108,7 @@ export const Mixer = ({ song }) => {
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {
-              switch (buses[`bus${i + 1}fx${j + 1}`]) {
+              switch (busFx[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb1":
                   return (
                     <Reverber
@@ -140,7 +137,7 @@ export const Mixer = ({ song }) => {
           })}
         </Rnd>
       )}
-      {busFxPanel2.isOpen && (
+      {busPanel2.isOpen && (
         <Rnd className="fx-panel" default={defaults} cancel="input">
           <CloseButton
             id="bus-panel-1"
@@ -156,7 +153,7 @@ export const Mixer = ({ song }) => {
 
           {array(2).map((_, i) => {
             return array(2).map((_, j) => {
-              switch (buses[`bus${i + 1}fx${j + 1}`]) {
+              switch (busFx[`bus${i + 1}fx${j + 1}`]) {
                 case "reverb2":
                   return (
                     <Reverber
